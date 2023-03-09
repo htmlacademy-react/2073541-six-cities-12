@@ -1,13 +1,8 @@
-import Logo from '../../components/logo/logo';
-import { Helmet } from 'react-helmet-async';
+import Layout from '../../components/layout/layout';
 
 function LoginPage(): JSX.Element {
   return (
-    <div className="page page--gray page--login">
-      <Helmet>
-        <title>6 cities: authorization</title>
-      </Helmet>
-      <Logo />
+    <Layout className="page page--gray page--login" pageTitle='6 cities: sign-in'>
       <main className="page__main page__main--login">
         <div className="page__login-container container">
           <section className="login">
@@ -33,7 +28,7 @@ function LoginPage(): JSX.Element {
           </section>
         </div>
       </main>
-    </div>
+    </Layout>
   );
 }
 export default LoginPage;

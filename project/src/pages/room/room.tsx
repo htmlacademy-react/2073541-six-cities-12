@@ -2,11 +2,8 @@ import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
 import CitiesCard from '../../components/card/card';
 
-type RoomPageProps = {
-  numberOfCards: number;
-}
 
-function RoomPage({ numberOfCards }: RoomPageProps): JSX.Element {
+function RoomPage(): JSX.Element {
   return (
     <div className="page">
       <Helmet>
@@ -213,7 +210,7 @@ function RoomPage({ numberOfCards }: RoomPageProps): JSX.Element {
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <div className="near-places__list places__list">
-              {Array(numberOfCards).fill(<CitiesCard />)}
+              <CitiesCard />
             </div>
           </section>
         </div>

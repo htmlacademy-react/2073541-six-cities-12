@@ -1,6 +1,6 @@
-import { Helmet } from 'react-helmet-async';
 import CitiesCard from '../../components/card/card';
-import Header from '../../components/header/header';
+import Layout from '../../components/layout/layout';
+
 
 type MainPageProps = {
   numberOfCards: number;
@@ -8,11 +8,7 @@ type MainPageProps = {
 
 function MainPage({ numberOfCards }: MainPageProps): JSX.Element {
   return (
-    <div className="page page--gray page--main">
-      <Helmet>
-        <title>6 cities</title>
-      </Helmet>
-      <Header />
+    <Layout className="page--gray page--main" pageTitle='6 cities'>
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
@@ -81,7 +77,7 @@ function MainPage({ numberOfCards }: MainPageProps): JSX.Element {
           </div>
         </div>
       </main>
-    </div>
+    </Layout>
   );
 }
 

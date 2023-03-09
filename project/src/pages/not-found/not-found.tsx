@@ -1,29 +1,23 @@
 import { Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
-import Logo from '../../components/logo/logo';
+import Layout from '../../components/layout/layout';
+
+import styles from './not-found.module.css';
 
 function NotFoundPage(): JSX.Element {
   return (
-    <div className="page page--gray page--login">
-      <Helmet>
-        <title>6 cities: not-found</title>
-      </Helmet>
-      <Logo />
-      <main className="page__main page__main--login">
-        <div className="page__login-container container">
-          <section className="login">
-            <h1 className="login__title">Sorry, the page you requested could not be found.</h1>
-            <div className="favorites__locations locations locations--current">
-              <div className="locations__item">
-                <Link to="/" className="locations__item-link" >
-                  <span>Go to the Homepage</span>
-                </Link>
-              </div>
-            </div>
-          </section>
-        </div>
-      </main>
-    </div>
+    <Layout pageTitle='6 cities: not-found'>
+      <div className={styles.container}>
+        <h1>404 Not Found</h1>
+        <p>The page you requested could not be found.</p>
+        <Link to="/" className={styles.link}>
+          Return to the main page
+        </Link>
+      </div>
+    </Layout>
+
   );
 }
+
 export default NotFoundPage;
+
+

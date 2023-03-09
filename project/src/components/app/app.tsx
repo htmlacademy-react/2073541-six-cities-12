@@ -5,7 +5,7 @@ import MainPage from '../../pages/main/main';
 import FavoritesPage from '../../pages/favorites/favorites';
 import LoginPage from '../../pages/login/login';
 import NotFoundPage from '../../pages/not-found/not-found';
-import RoomPage from '../../pages/property/property';
+import RoomPage from '../../pages/room/room';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import PrivateRoute from '../private-route/private-route';
 
@@ -29,7 +29,7 @@ function App({ numberOfCards }: AppScreenProps): JSX.Element {
           />
           <Route
             path={AppRoute.Room}
-            element={<RoomPage numberOfCards={3} />}
+            element={<RoomPage />}
           />
           <Route
             path="*"
@@ -38,7 +38,7 @@ function App({ numberOfCards }: AppScreenProps): JSX.Element {
           <Route
             path={AppRoute.Favorites}
             element={
-              <PrivateRoute authorizationStatus={AuthorizationStatus.NoAuth}>
+              <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
                 <FavoritesPage />
               </PrivateRoute>
             }
