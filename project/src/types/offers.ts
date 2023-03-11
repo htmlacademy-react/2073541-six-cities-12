@@ -34,3 +34,5 @@ export type Offer = {
   city: City;
   location: Location;
 };
+
+

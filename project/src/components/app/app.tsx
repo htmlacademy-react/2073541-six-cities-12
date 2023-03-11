@@ -13,19 +13,19 @@ import { Review } from '../../types/reviews';
 
 
 type AppScreenProps = {
-  numberOfCards: number;
   offers: Offer[];
   reviews: Review[];
+  numberOfCards: number;
 }
 
-function App({ numberOfCards, offers, reviews }: AppScreenProps): JSX.Element {
+function App({ offers, reviews, numberOfCards }: AppScreenProps): JSX.Element {
   return (
     <HelmetProvider>
       <BrowserRouter>
         <Routes>
           <Route
             path={AppRoute.Main}
-            element={<MainPage numberOfCards={numberOfCards} />}
+            element={<MainPage offers={offers} numberOfCards={numberOfCards} />}
           />
           <Route
             path={AppRoute.Login}
