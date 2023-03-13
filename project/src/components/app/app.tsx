@@ -8,20 +8,24 @@ import NotFoundPage from '../../pages/not-found/not-found';
 import RoomPage from '../../pages/room/room';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import PrivateRoute from '../private-route/private-route';
+import { Offer } from '../../types/offers';
+import { Review } from '../../types/reviews';
 
 
 type AppScreenProps = {
+  offers: Offer[];
+  reviews: Review[];
   numberOfCards: number;
 }
 
-function App({ numberOfCards }: AppScreenProps): JSX.Element {
+function App({ offers, reviews, numberOfCards }: AppScreenProps): JSX.Element {
   return (
     <HelmetProvider>
       <BrowserRouter>
         <Routes>
           <Route
             path={AppRoute.Main}
-            element={<MainPage numberOfCards={numberOfCards} />}
+            element={<MainPage offers={offers} numberOfCards={numberOfCards} />}
           />
           <Route
             path={AppRoute.Login}

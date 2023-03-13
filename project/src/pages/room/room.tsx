@@ -1,15 +1,11 @@
-import { Helmet } from 'react-helmet-async';
-import Header from '../../components/header/header';
-import CitiesCard from '../../components/card/card';
+
+import Layout from '../../components/layout/layout';
 
 
 function RoomPage(): JSX.Element {
+
   return (
-    <div className="page">
-      <Helmet>
-        <title>6 cities: property</title>
-      </Helmet>
-      <Header />
+    <Layout className="page" pageTitle='6 cities: property'>
       <main className="page__main page__main--property">
         <section className="property">
           <div className="property__gallery-container container">
@@ -210,12 +206,12 @@ function RoomPage(): JSX.Element {
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <div className="near-places__list places__list">
-              <CitiesCard />
+              {/*  <CitiesCard {...offers[0]} /> */}
             </div>
           </section>
         </div>
       </main>
-    </div>
+    </Layout>
   );
 }
 export default RoomPage;
