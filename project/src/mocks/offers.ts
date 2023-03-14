@@ -45,11 +45,11 @@ const offers: Offer[] = [
     bedrooms: 2,
     city: {
       location: {
-        latitude: 52.366894,
-        longitude: 4.901675,
+        latitude: 50.366894,
+        longitude: 6.901675,
         zoom: 9
       },
-      name: 'Amsterdam'
+      name: 'Cologne'
     },
     description: 'Experience a peaceful stay in this cozy and charming apartment with a beautiful view of the canal.',
     goods: [
@@ -69,7 +69,7 @@ const offers: Offer[] = [
       'img/apartment-02.jpg',
       'img/apartment-03.jpg',
     ],
-    isFavorite: false,
+    isFavorite: true,
     isPremium: true,
     location: {
       latitude: 52.375188,
