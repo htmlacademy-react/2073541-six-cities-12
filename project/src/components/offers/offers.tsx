@@ -8,13 +8,12 @@ type OffersProps = {
 }
 
 function Offers({ offers }: OffersProps): JSX.Element {
-  const [activeCard, setActiveCard] = useState<number | null>(null);
-  console.log(activeCard);
+  const [, setActiveCard] = useState<number | null>(null);
 
   return (
-    <div className="cities__places-list places__list tabs__content">
+    <div className="cities__places-list places__list">
       {offers.map((offer) => (
-        <CitiesCard offer={offer} key={offer.id} onMouseOver={setActiveCard} />
+        <CitiesCard offer={offer} key={offer.id} onMouseEnter={setActiveCard} onMouseLeave={setActiveCard} />
       ))}
     </div>
   );

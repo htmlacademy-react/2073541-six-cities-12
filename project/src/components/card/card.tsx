@@ -2,25 +2,31 @@ import { Offer } from '../../types/offers';
 
 type CardProps = {
   offer: Offer;
-  onMouseOver: (activeCard: number) => void;
+  onMouseEnter: (activeCard: number) => void;
+  onMouseLeave: (activeCard: number) => void;
 }
 
-function CitiesCard({ offer, onMouseOver }: CardProps): JSX.Element {
+function CitiesCard({ offer, onMouseEnter, onMouseLeave }: CardProps): JSX.Element {
   const { price, rating, title, type, isPremium, id } = offer;
+
+  function capitalize(string: string): string {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
   return (
-    <article className="cities__card place-card" onMouseOver={() => onMouseOver(id)}>
+    <article className="cities__card place-card" onMouseEnter={() => onMouseEnter(id)} onMouseLeave={() => onMouseLeave(id)}>
       {isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>
         </div>)}
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <a href="#">
+        <a href="/#">
           <img
             className="place-card__image"
             src="img/room.jpg"
             width="260"
             height="200"
-            alt="Place image"
+            alt={title}
           />
         </a>
       </div>
@@ -47,9 +53,9 @@ function CitiesCard({ offer, onMouseOver }: CardProps): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">{title}</a>
+          <a href="/#">{title}</a>
         </h2>
-        <p className="place-card__type">{type}</p>
+        <p className="place-card__type">{capitalize(type)}</p>
       </div>
     </article>
   );
