@@ -1,8 +1,13 @@
-
+import Offers from '../../components/offers/offers';
+import { Offer } from '../../types/offers';
 import Layout from '../../components/layout/layout';
+import Map from '../../components/map/map';
 
+type RoomPageProps = {
+  offers: Offer[];
+}
 
-function RoomPage(): JSX.Element {
+function RoomPage({ offers }: RoomPageProps): JSX.Element {
 
   return (
     <Layout className="page" pageTitle='6 cities: property'>
@@ -200,13 +205,13 @@ function RoomPage(): JSX.Element {
               </section>
             </div>
           </div>
-          <section className="property__map map"></section>
+          <Map className='property__map' />
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <div className="near-places__list places__list">
-              {/*  <CitiesCard {...offers[0]} /> */}
+              <Offers offers={offers} cardType='near-places' />
             </div>
           </section>
         </div>

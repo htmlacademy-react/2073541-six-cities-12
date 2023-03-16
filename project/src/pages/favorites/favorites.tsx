@@ -10,26 +10,24 @@ type OffersByCity = {
   [cityName: string]: Offer[];
 }
 
+function groupOffersByCity(offers: Offer[]): OffersByCity {
+
+  return offers.reduce<OffersByCity>((acc, offer) => {
+    const { city: { name: cityName } } = offer;
+
+    if (!acc[cityName]) {
+      acc[cityName] = [];
+    }
+
+    acc[cityName].push(offer);
+
+    return acc;
+  }, {});
+}
 
 function FavoritesPage({ offers }: FavoritesProps): JSX.Element {
 
-  function filterByIsFavorite(allOffers: Offer[]): Offer[] {
-
-    return allOffers.filter((offer) => offer.isFavorite);
-  }
-  const favoriteOffers = filterByIsFavorite(offers);
-
-  function groupOffersByCity(allOffers: Offer[]): OffersByCity {
-
-    return allOffers.reduce((offersByCity: OffersByCity, offer) => {
-      const { city: { name: cityName } } = offer;
-      if (!offersByCity[cityName]) {
-        offersByCity[cityName] = [];
-      }
-      offersByCity[cityName].push(offer);
-      return offersByCity;
-    }, {});
-  }
+  const favoriteOffers = offers.filter((offer) => offer.isFavorite);
   const offersByCity = groupOffersByCity(favoriteOffers);
 
   return (
@@ -50,7 +48,7 @@ function FavoritesPage({ offers }: FavoritesProps): JSX.Element {
                       </div>
                     </div>
                     <div className="favorites__places">
-                      <Offers offers={cityOffers} />
+                      <Offers offers={cityOffers} cardType='favorites' />
                     </div>
                   </li>
                 ))

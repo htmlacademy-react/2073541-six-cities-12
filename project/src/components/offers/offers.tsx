@@ -5,17 +5,18 @@ import CitiesCard from '../card/card';
 
 type OffersProps = {
   offers: Offer[];
+  cardType: 'cities' | 'favorites' | 'near-places';
 }
 
-function Offers({ offers }: OffersProps): JSX.Element {
+function Offers({ offers, cardType }: OffersProps): JSX.Element {
   const [, setActiveCard] = useState<number | null>(null);
 
   return (
-    <div className="cities__places-list places__list">
+    <>
       {offers.map((offer) => (
-        <CitiesCard offer={offer} key={offer.id} onMouseEnter={setActiveCard} onMouseLeave={setActiveCard} />
+        <CitiesCard offer={offer} key={offer.id} cardType={cardType} onMouseEnter={setActiveCard} onMouseLeave={setActiveCard} />
       ))}
-    </div>
+    </>
   );
 }
 
