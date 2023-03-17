@@ -1,21 +1,58 @@
-function CitiesCard() {
+import { Offer } from '../../types/offers';
+import { generatePath, Link } from 'react-router-dom';
+import { AppRoute } from '../../const';
+
+type CardProps = {
+  offer: Offer;
+  cardType: 'cities' | 'favorites' | 'near-places';
+  onMouseEnter: (activeCard: number) => void;
+  onMouseLeave: (activeCard: number | null) => void;
+}
+
+const sizes = {
+  'cities': {
+    width: '260',
+    height: '200'
+  },
+  'near-places': {
+    width: '260',
+    height: '200'
+  },
+  'favorites': {
+    width: '150',
+    height: '110'
+  }
+};
+
+function capitalize(string: string): string {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function CitiesCard({ offer, cardType, onMouseEnter, onMouseLeave }: CardProps): JSX.Element {
+  const { price, rating, title, type, isPremium, id } = offer;
+  const size = sizes[cardType];
+
   return (
-    <article className="cities__card place-card">
-      <div className="cities__image-wrapper place-card__image-wrapper">
-        <a href="#">
+    <article className={`${cardType}__card place-card`} onMouseEnter={() => onMouseEnter(id)} onMouseLeave={() => onMouseLeave(null)}>
+      {isPremium && (
+        <div className="place-card__mark">
+          <span>Premium</span>
+        </div>)}
+      <div className={`${cardType}__image-wrapper place-card__image-wrapper`}>
+        <Link to={generatePath(AppRoute.Room, { id: `${offer.id}` })}>
           <img
             className="place-card__image"
             src="img/room.jpg"
-            width="260"
-            height="200"
-            alt="Place image"
+            width={size.width}
+            height={size.height}
+            alt={title}
           />
-        </a>
+        </Link>
       </div>
-      <div className="place-card__info">
+      <div className={`${cardType}__card-info place-card__info`}>
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
-            <b className="place-card__price-value">&euro;80</b>
+            <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <button
@@ -31,15 +68,15 @@ function CitiesCard() {
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
             <span style={{ width: '80%' }}></span>
-            <span className="visually-hidden">Rating</span>
+            <span className="visually-hidden">{rating}</span>
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">Wood and stone place</a>
+          <Link to={generatePath(AppRoute.Room, { id: `${offer.id}` })} > {title}</Link>
         </h2>
-        <p className="place-card__type">Private room</p>
+        <p className="place-card__type">{capitalize(type)}</p>
       </div>
-    </article>
+    </article >
   );
 }
 
