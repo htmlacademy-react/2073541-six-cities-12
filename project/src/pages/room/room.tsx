@@ -1,14 +1,15 @@
 import Offers from '../../components/offers/offers';
-import { Offer } from '../../types/offers';
+import { Offer, City } from '../../types/offers';
 import Layout from '../../components/layout/layout';
 import Map from '../../components/map/map';
 import Review from '../../components/review/review';
 
 type RoomPageProps = {
   offers: Offer[];
+  city: City;
 }
 
-function RoomPage({ offers }: RoomPageProps): JSX.Element {
+function RoomPage({ offers, city }: RoomPageProps): JSX.Element {
 
   return (
     <Layout className="page" pageTitle='6 cities: property'>
@@ -161,7 +162,7 @@ function RoomPage({ offers }: RoomPageProps): JSX.Element {
               </section>
             </div>
           </div>
-          <Map className='property__map' />
+          <Map city={city} offers={offers} className='property__map' />
         </section>
         <div className="container">
           <section className="near-places places">

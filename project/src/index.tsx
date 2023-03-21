@@ -8,6 +8,7 @@ const Setting = {
   numberOfCards: 5,
 } as const;
 
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
 );
@@ -17,6 +18,7 @@ root.render(
     <App numberOfCards={Setting.numberOfCards}
       offers={offers}
       reviews={reviews}
+      city={offers[0].city}
     />
   </React.StrictMode>,
 );
