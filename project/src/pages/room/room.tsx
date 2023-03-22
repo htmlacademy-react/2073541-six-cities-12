@@ -1,15 +1,17 @@
 import Offers from '../../components/offers/offers';
 import { Offer } from '../../types/offers';
+import { Review } from '../../types/reviews';
 import Layout from '../../components/layout/layout';
 import Map from '../../components/map/map';
-import Review from '../../components/review/review';
+import Reviews from '../../components/reviews/reviews';
 
 type RoomPageProps = {
   offers: Offer[];
+  reviews: Review[];
 }
 
-function RoomPage({ offers }: RoomPageProps): JSX.Element {
-
+function RoomPage({ offers, reviews }: RoomPageProps): JSX.Element {
+  const nearOffers = offers.slice(0, 3);
   return (
     <Layout className="page" pageTitle='6 cities: property'>
       <main className="page__main page__main--property">
@@ -131,43 +133,16 @@ function RoomPage({ offers }: RoomPageProps): JSX.Element {
                   </p>
                 </div>
               </div>
-              <section className="property__reviews reviews">
-                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">1</span></h2>
-                <ul className="reviews__list">
-                  <li className="reviews__item">
-                    <div className="reviews__user user">
-                      <div className="reviews__avatar-wrapper user__avatar-wrapper">
-                        <img className="reviews__avatar user__avatar" src="img/avatar-max.jpg" width="54" height="54" alt="Reviews avatar" />
-                      </div>
-                      <span className="reviews__user-name">
-                        Max
-                      </span>
-                    </div>
-                    <div className="reviews__info">
-                      <div className="reviews__rating rating">
-                        <div className="reviews__stars rating__stars">
-                          <span style={{ width: '80%' }}></span>
-                          <span className="visually-hidden">Rating</span>
-                        </div>
-                      </div>
-                      <p className="reviews__text">
-                        A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.
-                      </p>
-                      <time className="reviews__time" dateTime="2019-04-24">April 2019</time>
-                    </div>
-                  </li>
-                </ul>
-                <Review />
-              </section>
+              <Reviews reviews={reviews} />
             </div>
           </div>
-          <Map city={offers[0].city} offers={offers} className='property__map' />
+          <Map city={offers[0].city} offers={nearOffers} className='property__map' />
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <div className="near-places__list places__list">
-              <Offers offers={offers} cardType='near-places' />
+              <Offers offers={nearOffers} cardType='near-places' />
             </div>
           </section>
         </div>

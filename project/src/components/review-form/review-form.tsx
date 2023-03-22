@@ -8,7 +8,7 @@ const RATINGS = [
   { value: 1, title: 'terribly' },
 ];
 
-function Review(): JSX.Element {
+function ReviewForm(): JSX.Element {
 
   const [reviewData, setReviewData] = useState({
     rating: 0,
@@ -70,4 +70,4 @@ function Review(): JSX.Element {
   );
 }
 
-export default Review;
+export default ReviewForm;
