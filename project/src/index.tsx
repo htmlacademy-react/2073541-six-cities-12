@@ -8,6 +8,7 @@ const Setting = {
   numberOfCards: 5,
 } as const;
 
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
 );
