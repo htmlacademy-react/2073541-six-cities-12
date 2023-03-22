@@ -18,7 +18,6 @@ root.render(
     <App numberOfCards={Setting.numberOfCards}
       offers={offers}
       reviews={reviews}
-      city={offers[0].city}
     />
   </React.StrictMode>,
 );

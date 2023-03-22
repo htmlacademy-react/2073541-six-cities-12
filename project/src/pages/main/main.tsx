@@ -4,16 +4,14 @@ import Offers from '../../components/offers/offers';
 import Map from '../../components/map/map';
 import Tabs from '../../components/tabs/tabs';
 import Sort from '../../components/sort/sort';
-import { City } from '../../types/offers';
 
 
 type MainPageProps = {
   offers: Offer[];
   numberOfCards: number;
-  city: City;
 }
 
-function MainPage({ offers, numberOfCards, city }: MainPageProps): JSX.Element {
+function MainPage({ offers, numberOfCards }: MainPageProps): JSX.Element {
 
   return (
     <Layout className="page--gray page--main" pageTitle='6 cities'>
@@ -31,7 +29,7 @@ function MainPage({ offers, numberOfCards, city }: MainPageProps): JSX.Element {
               </div>
             </section>
             <div className="cities__right-section">
-              <div className='cities__map'><Map city={city} offers={offers} className='cities__map' /></div>
+              <Map city={offers[0].city} offers={offers} className='cities__map' />
             </div>
           </div>
         </div>

@@ -3,6 +3,7 @@ import { useRef, useEffect } from 'react';
 import { Icon, Marker } from 'leaflet';
 import { City, Offer } from '../../types/offers';
 import useMap from '../../hooks/useMap/useMap';
+import 'leaflet/dist/leaflet.css';
 
 
 const URL_DEFAULT_ICON = 'img/pin.svg';
@@ -31,8 +32,7 @@ const defaultIcon = new Icon({
 });
 
 
-function Map(props: MapProps): JSX.Element {
-  const { city, offers, className } = props;
+function Map({ city, offers, className }: MapProps): JSX.Element {
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
   const style = mapStyle[className];
