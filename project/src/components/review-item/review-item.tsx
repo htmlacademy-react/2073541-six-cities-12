@@ -1,13 +1,11 @@
 import { Review } from '../../types/reviews';
+import { calculateRatingPercent, formatDate, formatDateTime } from '../../utils/utils';
+
 
 type ReviewItemProps = {
   review: Review;
 };
 
-function formatDate(dateString: string): string {
-  const date = new Date(dateString);
-  return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-}
 
 function ReviewItem({ review }: ReviewItemProps): JSX.Element {
   const { user, comment, rating, date } = review;
@@ -25,14 +23,14 @@ function ReviewItem({ review }: ReviewItemProps): JSX.Element {
       <div className="reviews__info">
         <div className="reviews__rating rating">
           <div className="reviews__stars rating__stars">
-            <span style={{ width: `${rating * 20}%` }}></span>
+            <span style={{ width: calculateRatingPercent(rating) }}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
         <p className="reviews__text">
           {comment}
         </p>
-        <time className="reviews__time" dateTime={date}>{formatDate(date)}</time>
+        <time className="reviews__time" dateTime={formatDateTime(date)}>{formatDate(date)}</time>
       </div>
     </li>
   );

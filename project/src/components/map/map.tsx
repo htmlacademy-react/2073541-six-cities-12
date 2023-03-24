@@ -1,12 +1,13 @@
 import cn from 'classnames';
 import { useRef, useEffect } from 'react';
 import { Icon, Marker } from 'leaflet';
-import { City, Offer } from '../../types/offers';
+import { Offer } from '../../types/offers';
 import useMap from '../../hooks/useMap/useMap';
 import 'leaflet/dist/leaflet.css';
 
 
 const URL_DEFAULT_ICON = 'img/pin.svg';
+const URL_CURRENT_ICON = 'img/pin-active.svg';
 const mapStyle = {
   'cities__map': {
     height: '100%',
@@ -19,22 +20,27 @@ const mapStyle = {
     marginLeft: 'auto'
   }
 };
-
-type MapProps = {
-  className: 'cities__map' | 'property__map';
-  city: City;
-  offers: Offer[];
-}
 const defaultIcon = new Icon({
   iconUrl: URL_DEFAULT_ICON,
   iconSize: [28, 40],
   iconAnchor: [14, 40]
 });
+const currentIcon = new Icon({
+  iconUrl: URL_CURRENT_ICON,
+  iconSize: [28, 40],
+  iconAnchor: [14, 40]
+});
+
+type MapProps = {
+  className: 'cities__map' | 'property__map';
+  offers: Offer[];
+  currentOffer: Offer;
+}
 
 
-function Map({ city, offers, className }: MapProps): JSX.Element {
+function Map({ offers, currentOffer, className }: MapProps): JSX.Element {
   const mapRef = useRef(null);
-  const map = useMap(mapRef, city);
+  const map = useMap(mapRef, currentOffer.city);
   const style = mapStyle[className];
 
   useEffect(() => {
@@ -46,12 +52,15 @@ function Map({ city, offers, className }: MapProps): JSX.Element {
         });
 
         marker
-          .setIcon(defaultIcon
+          .setIcon(
+            (currentOffer !== null) && (offer.id === currentOffer.id)
+              ? currentIcon
+              : defaultIcon
           )
           .addTo(map);
       });
     }
-  }, [map, offers]);
+  }, [map, offers, currentOffer]);
 
 
   return (

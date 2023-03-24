@@ -1,6 +1,7 @@
 import { Offer } from '../../types/offers';
 import { generatePath, Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
+import { capitalize } from '../../utils/utils';
 
 type CardProps = {
   offer: Offer;
@@ -24,9 +25,6 @@ const sizes = {
   }
 };
 
-function capitalize(string: string): string {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
 
 function CitiesCard({ offer, cardType, onMouseEnter, onMouseLeave }: CardProps): JSX.Element {
   const { price, rating, title, type, isPremium, id } = offer;

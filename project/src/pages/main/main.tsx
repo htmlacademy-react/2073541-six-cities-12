@@ -29,7 +29,7 @@ function MainPage({ offers, numberOfCards }: MainPageProps): JSX.Element {
               </div>
             </section>
             <div className="cities__right-section">
-              <Map city={offers[0].city} offers={offers} className='cities__map' />
+              <Map offers={offers} currentOffer={offers[0]} className='cities__map' />
             </div>
           </div>
         </div>
