@@ -5,19 +5,29 @@ import Layout from '../../components/layout/layout';
 import Map from '../../components/map/map';
 import Reviews from '../../components/reviews/reviews';
 import { calculateRatingPercent, capitalize } from '../../utils/utils';
+import { Navigate, useParams } from 'react-router-dom';
+import { AppRoute } from '../../const';
 
 const NEAR_OFFERS_NUMBER = 3;
 
 type RoomPageProps = {
-  offer: Offer;
   offers: Offer[];
   reviews: Review[];
 }
 
-function RoomPage({ offers, reviews, offer }: RoomPageProps): JSX.Element {
+function RoomPage({ offers, reviews }: RoomPageProps): JSX.Element {
+
+  const nearOffers = offers.slice(0, NEAR_OFFERS_NUMBER);
+  const { id } = useParams();
+  const offer: Offer | undefined = offers.find((item) => item.id === Number(id));
+
+  if (!offer) {
+    return (<Navigate to={AppRoute.Main} />);
+  }
+
   const { images, rating, title, type, bedrooms, maxAdults, price, goods, description } = offer;
   const { avatarUrl, isPro, name } = offer.host;
-  const nearOffers = offers.slice(0, NEAR_OFFERS_NUMBER);
+
   return (
     <Layout className="page" pageTitle='6 cities: property'>
       <main className="page__main page__main--property">
