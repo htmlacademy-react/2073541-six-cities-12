@@ -1,12 +1,13 @@
 import { Offer } from '../../types/offers';
 import { generatePath, Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
+import { capitalize } from '../../utils/utils';
 
 type CardProps = {
   offer: Offer;
   cardType: 'cities' | 'favorites' | 'near-places';
-  onMouseEnter: (activeCard: number) => void;
-  onMouseLeave: (activeCard: number | null) => void;
+  onMouseEnter?: (activeCard: number) => void;
+  onMouseLeave?: (activeCard: number | null) => void;
 }
 
 const sizes = {
@@ -24,16 +25,13 @@ const sizes = {
   }
 };
 
-function capitalize(string: string): string {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
 
 function CitiesCard({ offer, cardType, onMouseEnter, onMouseLeave }: CardProps): JSX.Element {
   const { price, rating, title, type, isPremium, id } = offer;
   const size = sizes[cardType];
 
   return (
-    <article className={`${cardType}__card place-card`} onMouseEnter={() => onMouseEnter(id)} onMouseLeave={() => onMouseLeave(null)}>
+    <article className={`${cardType}__card place-card`} onMouseEnter={onMouseEnter && (() => onMouseEnter(id))} onMouseLeave={onMouseLeave && (() => onMouseLeave(null))}>
       {isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>
