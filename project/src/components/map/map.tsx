@@ -34,13 +34,13 @@ const currentIcon = new Icon({
 type MapProps = {
   className: 'cities__map' | 'property__map';
   offers: Offer[];
-  currentOffer: Offer;
+  currentOfferId: number | null;
 }
 
 
-function Map({ offers, currentOffer, className }: MapProps): JSX.Element {
+function Map({ offers, currentOfferId, className }: MapProps): JSX.Element {
   const mapRef = useRef(null);
-  const map = useMap(mapRef, currentOffer.city);
+  const map = useMap(mapRef, offers[0].city);
   const style = mapStyle[className];
 
   useEffect(() => {
@@ -53,14 +53,14 @@ function Map({ offers, currentOffer, className }: MapProps): JSX.Element {
 
         marker
           .setIcon(
-            (currentOffer !== null) && (offer.id === currentOffer.id)
+            currentOfferId && offer.id === currentOfferId
               ? currentIcon
               : defaultIcon
           )
           .addTo(map);
       });
     }
-  }, [map, offers, currentOffer]);
+  }, [map, offers, currentOfferId]);
 
 
   return (

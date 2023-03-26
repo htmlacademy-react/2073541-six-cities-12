@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Layout from '../../components/layout/layout';
 import { Offer } from '../../types/offers';
 import Offers from '../../components/offers/offers';
@@ -12,6 +13,7 @@ type MainPageProps = {
 }
 
 function MainPage({ offers, numberOfCards }: MainPageProps): JSX.Element {
+  const [activeCard, setActiveCard] = useState<number | null>(null);
 
   return (
     <Layout className="page--gray page--main" pageTitle='6 cities'>
@@ -25,11 +27,11 @@ function MainPage({ offers, numberOfCards }: MainPageProps): JSX.Element {
               <b className="places__found">{numberOfCards} places to stay in Amsterdam</b>
               <Sort />
               <div className="cities__places-list places__list tabs__content">
-                <Offers offers={offers} cardType='cities' />
+                <Offers offers={offers} cardType="cities" onMouseEnter={setActiveCard} onMouseLeave={setActiveCard} />
               </div>
             </section>
             <div className="cities__right-section">
-              <Map offers={offers} currentOffer={offers[0]} className='cities__map' />
+              <Map offers={offers} currentOfferId={activeCard} className="cities__map" />
             </div>
           </div>
         </div>

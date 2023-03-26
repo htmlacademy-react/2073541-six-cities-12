@@ -6,8 +6,8 @@ import { capitalize } from '../../utils/utils';
 type CardProps = {
   offer: Offer;
   cardType: 'cities' | 'favorites' | 'near-places';
-  onMouseEnter: (activeCard: number) => void;
-  onMouseLeave: (activeCard: number | null) => void;
+  onMouseEnter?: (activeCard: number) => void;
+  onMouseLeave?: (activeCard: number | null) => void;
 }
 
 const sizes = {
@@ -31,7 +31,7 @@ function CitiesCard({ offer, cardType, onMouseEnter, onMouseLeave }: CardProps):
   const size = sizes[cardType];
 
   return (
-    <article className={`${cardType}__card place-card`} onMouseEnter={() => onMouseEnter(id)} onMouseLeave={() => onMouseLeave(null)}>
+    <article className={`${cardType}__card place-card`} onMouseEnter={onMouseEnter && (() => onMouseEnter(id))} onMouseLeave={onMouseLeave && (() => onMouseLeave(null))}>
       {isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>

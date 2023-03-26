@@ -8,7 +8,8 @@ import { calculateRatingPercent, capitalize } from '../../utils/utils';
 import { Navigate, useParams } from 'react-router-dom';
 import { AppRoute } from '../../const';
 
-const NEAR_OFFERS_NUMBER = 3;
+const NEAR_OFFERS_AMOUNT = 3;
+const MAX_PHOTOS_AMOUNT = 6;
 
 type RoomPageProps = {
   offers: Offer[];
@@ -17,7 +18,7 @@ type RoomPageProps = {
 
 function RoomPage({ offers, reviews }: RoomPageProps): JSX.Element {
 
-  const nearOffers = offers.slice(0, NEAR_OFFERS_NUMBER);
+  const nearOffers = offers.slice(0, NEAR_OFFERS_AMOUNT);
   const { id } = useParams();
   const offer: Offer | undefined = offers.find((item) => item.id === Number(id));
 
@@ -34,7 +35,7 @@ function RoomPage({ offers, reviews }: RoomPageProps): JSX.Element {
         <section className="property">
           <div className="property__gallery-container container">
             <div className="property__gallery">
-              {images.map((image) => (
+              {images.slice(0, MAX_PHOTOS_AMOUNT).map((image) => (
                 <div className="property__image-wrapper" key={image}>
                   <img className="property__image" src={image} alt={title} />
                 </div>
@@ -69,7 +70,7 @@ function RoomPage({ offers, reviews }: RoomPageProps): JSX.Element {
                   {capitalize(type)}
                 </li>
                 <li className="property__feature property__feature--bedrooms">
-                  {`${bedrooms} Bedrooms`}
+                  {bedrooms} Bedrooms
                 </li>
                 <li className="property__feature property__feature--adults">
                   {`Max ${maxAdults} adults`}
@@ -112,13 +113,13 @@ function RoomPage({ offers, reviews }: RoomPageProps): JSX.Element {
               <Reviews reviews={reviews} />
             </div>
           </div>
-          <Map offers={[...nearOffers, offer]} currentOffer={offer} className='property__map' />
+          <Map offers={[...nearOffers, offer]} currentOfferId={Number(id)} className="property__map" />
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <div className="near-places__list places__list">
-              <Offers offers={nearOffers} cardType='near-places' />
+              <Offers offers={nearOffers} cardType="near-places" />
             </div>
           </section>
         </div>
