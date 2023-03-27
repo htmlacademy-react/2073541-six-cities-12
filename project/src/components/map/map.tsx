@@ -1,6 +1,6 @@
 import cn from 'classnames';
 import { useRef, useEffect } from 'react';
-import { Icon, Marker } from 'leaflet';
+import { Icon, Marker, LayerGroup } from 'leaflet';
 import { Offer } from '../../types/offers';
 import useMap from '../../hooks/useMap/useMap';
 import 'leaflet/dist/leaflet.css';
@@ -44,6 +44,8 @@ function Map({ offers, currentOfferId, className }: MapProps): JSX.Element {
   const style = mapStyle[className];
 
   useEffect(() => {
+    const markerGroup = new LayerGroup();
+
     if (map) {
       offers.forEach((offer) => {
         const marker = new Marker({
@@ -57,9 +59,14 @@ function Map({ offers, currentOfferId, className }: MapProps): JSX.Element {
               ? currentIcon
               : defaultIcon
           )
-          .addTo(map);
+          .addTo(markerGroup);
       });
+      markerGroup.addTo(map);
     }
+
+    return () => {
+      map?.removeLayer(markerGroup);
+    };
   }, [map, offers, currentOfferId]);
 
 
