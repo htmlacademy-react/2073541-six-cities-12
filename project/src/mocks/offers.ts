@@ -45,8 +45,8 @@ const offers: Offer[] = [
     bedrooms: 2,
     city: {
       location: {
-        latitude: 50.366894,
-        longitude: 6.901675,
+        latitude: 50.938361,
+        longitude: 6.959974,
         zoom: 9
       },
       name: 'Cologne'
@@ -72,8 +72,8 @@ const offers: Offer[] = [
     isFavorite: true,
     isPremium: true,
     location: {
-      latitude: 52.375188,
-      longitude: 4.883637,
+      latitude: 50.938361,
+      longitude: 6.959974,
       zoom: 10
     },
     maxAdults: 2,
@@ -210,6 +210,56 @@ const offers: Offer[] = [
     rating: 4.9,
     title: 'Beautiful canal house in the heart of Amsterdam',
     type: 'house'
+  },
+  {
+    bedrooms: 3,
+    city: {
+      location: {
+        latitude: 48.856614,
+        longitude: 2.3522219,
+        zoom: 10
+      },
+      name: 'Paris'
+    },
+    description: 'Experience the charming Parisian lifestyle in this beautiful apartment located in the heart of the city. Enjoy the stunning view of the Eiffel Tower from the living room and immerse yourself in the romantic atmosphere of the city.',
+    goods: [
+      'Heating',
+      'Wifi',
+      'TV',
+      'Washing machine',
+      'Air conditioning'
+    ],
+    host: {
+      avatarUrl: 'img/avatar-angelina.jpg',
+      id: 15,
+      isPro: true,
+      name: 'Sophie'
+    },
+    id: 7,
+    images: [
+      'img/apartment-01.jpg',
+      'img/apartment-02.jpg',
+      'img/apartment-03.jpg',
+      'img/apartment-01.jpg',
+      'img/apartment-02.jpg',
+      'img/apartment-03.jpg',
+      'img/apartment-01.jpg',
+      'img/apartment-02.jpg',
+      'img/apartment-03.jpg',
+    ],
+    isFavorite: true,
+    isPremium: false,
+    location: {
+      latitude: 48.858093,
+      longitude: 2.294694,
+      zoom: 12
+    },
+    maxAdults: 6,
+    previewImage: 'img/apartment-04.jpg',
+    price: 500,
+    rating: 4.8,
+    title: 'Beautiful apartment with a view of the Eiffel Tower',
+    type: 'apartment'
   }
 ];
 export default offers;

@@ -8,6 +8,7 @@ import 'leaflet/dist/leaflet.css';
 
 const URL_DEFAULT_ICON = 'img/pin.svg';
 const URL_CURRENT_ICON = 'img/pin-active.svg';
+
 const mapStyle = {
   'cities__map': {
     height: '100%',
@@ -39,14 +40,17 @@ type MapProps = {
 
 
 function Map({ offers, currentOfferId, className }: MapProps): JSX.Element {
+  const city = offers[0].city;
   const mapRef = useRef(null);
-  const map = useMap(mapRef, offers[0].city);
+  const map = useMap(mapRef, city);
   const style = mapStyle[className];
 
   useEffect(() => {
     const markerGroup = new LayerGroup();
 
     if (map) {
+      const latlng = { lat: city.location.latitude, lng: city.location.longitude };
+      map.setView(latlng);
       offers.forEach((offer) => {
         const marker = new Marker({
           lat: offer.location.latitude,
@@ -67,7 +71,7 @@ function Map({ offers, currentOfferId, className }: MapProps): JSX.Element {
     return () => {
       map?.removeLayer(markerGroup);
     };
-  }, [map, offers, currentOfferId]);
+  }, [map, offers, currentOfferId, city]);
 
 
   return (
