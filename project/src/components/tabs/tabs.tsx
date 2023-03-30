@@ -1,40 +1,34 @@
-import { Link } from 'react-router-dom';
+import { CITIES } from '../../const';
+import cn from 'classnames';
 
-function Tabs(): JSX.Element {
+type TabsProps = {
+  currentCity: string;
+  onChangeCity: (city: string) => void;
+};
+
+function Tabs({ currentCity, onChangeCity }: TabsProps): JSX.Element {
+
   return (
     <div className="tabs">
       <section className="locations container">
         <ul className="locations__list tabs__list">
-          <li className="locations__item">
-            <Link className="locations__item-link tabs__item" to="/#">
-              <span>Paris</span>
-            </Link>
-          </li>
-          <li className="locations__item">
-            <Link className="locations__item-link tabs__item" to="/#">
-              <span>Cologne</span>
-            </Link>
-          </li>
-          <li className="locations__item">
-            <Link className="locations__item-link tabs__item" to="/#">
-              <span>Brussels</span>
-            </Link>
-          </li>
-          <li className="locations__item">
-            <Link className="locations__item-link tabs__item tabs__item--active" to="/#">
-              <span>Amsterdam</span>
-            </Link>
-          </li>
-          <li className="locations__item">
-            <Link className="locations__item-link tabs__item" to="/#">
-              <span>Hamburg</span>
-            </Link>
-          </li>
-          <li className="locations__item">
-            <Link className="locations__item-link tabs__item" to="/#">
-              <span>Dusseldorf</span>
-            </Link>
-          </li>
+          {CITIES.map((city) => {
+            const className = cn('locations__item-link tabs__item', (currentCity === city) && 'tabs__item--active');
+            return (
+              <li className="locations__item" key={city}>
+                <a
+                  className={className}
+                  href="/#"
+                  onClick={(evt) => {
+                    evt.preventDefault();
+                    onChangeCity(city);
+                  }}
+                >
+                  <span>{city}</span>
+                </a>
+              </li>
+            );
+          })}
         </ul>
       </section>
     </div>
