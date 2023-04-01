@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { changeCity } from '../../store/action';
 import cn from 'classnames';
 import MainEmpty from '../../components/main-empty/main-empty';
+import { sortOffers } from '../../utils/utils';
 
 function MainPage(): JSX.Element {
 
@@ -19,6 +20,8 @@ function MainPage(): JSX.Element {
   const currentCityOffers = offers.filter(
     (offer) => offer.city.name === currentCity
   );
+  const currentSortOption = useAppSelector((state) => state.sortOption);
+  const sortedOffers = sortOffers(currentCityOffers, currentSortOption);
 
   return (
     <Layout className="page--gray page--main" pageTitle='6 cities'>
@@ -33,7 +36,7 @@ function MainPage(): JSX.Element {
                 <b className="places__found">{currentCityOffers.length} places to stay in {currentCity}</b>
                 <Sort />
                 <div className="cities__places-list places__list tabs__content">
-                  <Offers offers={currentCityOffers} cardType="cities" />
+                  <Offers offers={sortedOffers} cardType="cities" />
                 </div>
               </section>
               <div className="cities__right-section">
