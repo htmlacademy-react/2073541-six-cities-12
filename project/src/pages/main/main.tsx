@@ -28,7 +28,7 @@ function MainPage(): JSX.Element {
       <main className={cn('page__main page__main--index', (currentCityOffers.length === 0) && 'page__main--index-empty')}>
         <h1 className="visually-hidden">Cities</h1>
         <Tabs currentCity={currentCity} onChangeCity={onChangeCity} />
-        {currentCityOffers.length ? (
+        {(currentCityOffers.length > 0) ? (
           <div className="cities">
             <div className="cities__places-container container">
               <section className="cities__places places">

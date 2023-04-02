@@ -1,6 +1,6 @@
 import cn from 'classnames';
 import { SortOptions } from '../../const';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { changeSort } from '../../store/action';
 
@@ -8,6 +8,22 @@ function Sort(): JSX.Element {
   const [open, setOpen] = useState(false);
   const dispatch = useAppDispatch();
   const currentSortOption = useAppSelector((state) => state.sortOption);
+  const dropdownRef = useRef<HTMLUListElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [dropdownRef]);
+
   const handleSortClick = (option: string) => {
     dispatch(changeSort(option));
     setOpen(!open);
@@ -22,7 +38,10 @@ function Sort(): JSX.Element {
           <use xlinkHref="#icon-arrow-select"></use>
         </svg>
       </span>
-      <ul className={cn('places__options', 'places__options--custom', { 'places__options--opened': open })}>
+      <ul
+        ref={dropdownRef}
+        className={cn('places__options', 'places__options--custom', { 'places__options--opened': open })}
+      >
         {Object.values(SortOptions).map((option) => (
           <li
             key={option}
@@ -41,5 +60,3 @@ function Sort(): JSX.Element {
 }
 
 export default Sort;
-
-

@@ -18,22 +18,17 @@ function capitalize(string: string): string {
 }
 
 function sortOffers(offers: Offer[], sortBy: string): Offer[] {
-  let sortedOffers;
+
   switch (sortBy) {
     case 'Price: high to low':
-      sortedOffers = offers.slice().sort((a, b) => b.price - a.price);
-      break;
+      return offers.slice().sort((a, b) => b.price - a.price);
     case 'Price: low to high':
-      sortedOffers = offers.slice().sort((a, b) => a.price - b.price);
-      break;
+      return offers.slice().sort((a, b) => a.price - b.price);
     case 'Top rated first':
-      sortedOffers = offers.slice().sort((a, b) => b.rating - a.rating);
-      break;
+      return offers.slice().sort((a, b) => b.rating - a.rating);
     default:
-      sortedOffers = offers;
-      break;
+      return offers;
   }
-  return sortedOffers;
 }
 
 export { calculateRatingPercent, formatDate, formatDateTime, capitalize, sortOffers };
