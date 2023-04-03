@@ -2,12 +2,12 @@ import { Offer } from '../../types/offers';
 import { generatePath, Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { capitalize } from '../../utils/utils';
+import { useAppDispatch } from '../../hooks';
+import { selectOffer } from '../../store/action';
 
 type CardProps = {
   offer: Offer;
   cardType: 'cities' | 'favorites' | 'near-places';
-  onMouseEnter?: (activeCard: number) => void;
-  onMouseLeave?: (activeCard: number | null) => void;
 }
 
 const sizes = {
@@ -26,12 +26,14 @@ const sizes = {
 };
 
 
-function CitiesCard({ offer, cardType, onMouseEnter, onMouseLeave }: CardProps): JSX.Element {
+function CitiesCard({ offer, cardType }: CardProps): JSX.Element {
   const { price, rating, title, type, isPremium, id } = offer;
   const size = sizes[cardType];
+  const dispatch = useAppDispatch();
+
 
   return (
-    <article className={`${cardType}__card place-card`} onMouseEnter={onMouseEnter && (() => onMouseEnter(id))} onMouseLeave={onMouseLeave && (() => onMouseLeave(null))}>
+    <article className={`${cardType}__card place-card`} onMouseEnter={() => dispatch(selectOffer(id))} onMouseLeave={() => dispatch(selectOffer(null))}>
       {isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>
