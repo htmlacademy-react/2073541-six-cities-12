@@ -27,5 +27,14 @@ const SortOptions = {
   TOP_RATED_FIRST: 'Top rated first'
 };
 
+enum APIRoute {
+  Offers = '/hotels',
+  Comments = '/comments',
+  Login = '/login',
+  Logout = '/logout'
+}
 
-export { AppRoute, AuthorizationStatus, CITIES, SortOptions };
+const TIMEOUT_SHOW_ERROR = 2000;
+
+
+export { TIMEOUT_SHOW_ERROR, AppRoute, AuthorizationStatus, CITIES, SortOptions, APIRoute };

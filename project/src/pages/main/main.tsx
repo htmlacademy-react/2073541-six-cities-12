@@ -10,6 +10,7 @@ import cn from 'classnames';
 import MainEmpty from '../../components/main-empty/main-empty';
 import { sortOffers } from '../../utils/utils';
 
+
 function MainPage(): JSX.Element {
 
   const dispatch = useAppDispatch();

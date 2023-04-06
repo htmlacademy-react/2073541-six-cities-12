@@ -4,6 +4,7 @@ import { AppRoute } from '../../const';
 import { capitalize } from '../../utils/utils';
 import { useAppDispatch } from '../../hooks';
 import { selectOffer } from '../../store/action';
+import { calculateRatingPercent } from '../../utils/utils';
 
 type CardProps = {
   offer: Offer;
@@ -67,7 +68,7 @@ function CitiesCard({ offer, cardType }: CardProps): JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{ width: '80%' }}></span>
+            <span style={{ width: calculateRatingPercent(rating) }}></span>
             <span className="visually-hidden">{rating}</span>
           </div>
         </div>
