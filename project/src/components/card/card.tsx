@@ -28,7 +28,7 @@ const sizes = {
 
 
 function CitiesCard({ offer, cardType }: CardProps): JSX.Element {
-  const { price, rating, title, type, isPremium, id } = offer;
+  const { price, rating, title, type, isPremium, id, images, isFavorite } = offer;
   const size = sizes[cardType];
   const dispatch = useAppDispatch();
 
@@ -43,7 +43,7 @@ function CitiesCard({ offer, cardType }: CardProps): JSX.Element {
         <Link to={generatePath(AppRoute.Room, { id: `${offer.id}` })}>
           <img
             className="place-card__image"
-            src="img/room.jpg"
+            src={images[0]}
             width={size.width}
             height={size.height}
             alt={title}
@@ -56,15 +56,17 @@ function CitiesCard({ offer, cardType }: CardProps): JSX.Element {
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button
-            className="place-card__bookmark-button place-card__bookmark-button--active button"
-            type="button"
-          >
-            <svg className="place-card__bookmark-icon" width="18" height="19">
-              <use xlinkHref="#icon-bookmark"></use>
-            </svg>
-            <span className="visually-hidden">In bookmarks</span>
-          </button>
+          {isFavorite && (
+            <button
+              className="place-card__bookmark-button place-card__bookmark-button--active button"
+              type="button"
+            >
+              <svg className="place-card__bookmark-icon" width="18" height="19">
+                <use xlinkHref="#icon-bookmark"></use>
+              </svg>
+              <span className="visually-hidden">In bookmarks</span>
+            </button>
+          )}
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">

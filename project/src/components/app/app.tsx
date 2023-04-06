@@ -5,10 +5,11 @@ import FavoritesPage from '../../pages/favorites/favorites';
 import LoginPage from '../../pages/login/login';
 import NotFoundPage from '../../pages/not-found/not-found';
 import RoomPage from '../../pages/room/room';
-import { AppRoute, AuthorizationStatus } from '../../const';
+import { AppRoute } from '../../const';
 import PrivateRoute from '../private-route/private-route';
 import { Review } from '../../types/reviews';
 import { useAppSelector } from '../../hooks';
+import LoadingScreen from '../../pages/loading-screen/loading-screen';
 
 
 type AppScreenProps = {
@@ -18,6 +19,16 @@ type AppScreenProps = {
 function App({ reviews }: AppScreenProps): JSX.Element {
 
   const offers = useAppSelector((state) => state.offers);
+  const authorizationStatus = useAppSelector(
+    (state) => state.authorizationStatus
+  );
+  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
+
+  if (isOffersDataLoading) {
+    return (
+      <LoadingScreen />
+    );
+  }
 
   return (
     <HelmetProvider>
@@ -42,7 +53,7 @@ function App({ reviews }: AppScreenProps): JSX.Element {
           <Route
             path={AppRoute.Favorites}
             element={
-              <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
+              <PrivateRoute authorizationStatus={authorizationStatus}>
                 <FavoritesPage offers={offers} />
               </PrivateRoute>
             }
