@@ -1,12 +1,13 @@
-import Offers from '../../components/offers/offers';
+import { Navigate, useParams } from 'react-router-dom';
 import { Offer } from '../../types/offers';
 import { Review } from '../../types/reviews';
+import { calculateRatingPercent, capitalize } from '../../utils/utils';
 import Layout from '../../components/layout/layout';
+import Offers from '../../components/offers/offers';
 import Map from '../../components/map/map';
 import Reviews from '../../components/reviews/reviews';
-import { calculateRatingPercent, capitalize } from '../../utils/utils';
-import { Navigate, useParams } from 'react-router-dom';
 import { AppRoute } from '../../const';
+
 
 const NEAR_OFFERS_AMOUNT = 3;
 const MAX_PHOTOS_AMOUNT = 6;
