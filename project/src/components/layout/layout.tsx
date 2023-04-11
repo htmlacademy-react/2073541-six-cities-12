@@ -1,6 +1,6 @@
 import React from 'react';
-import Header from '../header/header';
 import { Helmet } from 'react-helmet-async';
+import Header from '../header/header';
 
 type LayoutProps = {
   pageTitle: string;
@@ -9,6 +9,7 @@ type LayoutProps = {
 }
 
 function Layout({ pageTitle, className = '', children }: LayoutProps): JSX.Element {
+
   return (
     <div className={`page ${className}`}>
       <Helmet>
