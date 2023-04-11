@@ -1,4 +1,5 @@
-import { Route, BrowserRouter, Routes } from 'react-router-dom';
+import browserHistory from '../../browser-history/browser-history';
+import { Route, Routes } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { useAppSelector } from '../../hooks';
 import { AuthorizationStatus, AppRoute } from '../../const';
@@ -10,7 +11,7 @@ import NotFoundPage from '../../pages/not-found/not-found';
 import RoomPage from '../../pages/room/room';
 import PrivateRoute from '../private-route/private-route';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
-
+import HistoryRouter from '../history-route/history-route';
 
 type AppScreenProps = {
   reviews: Review[];
@@ -27,7 +28,7 @@ function App({ reviews }: AppScreenProps): JSX.Element {
 
   return (
     <HelmetProvider>
-      <BrowserRouter>
+      <HistoryRouter history={browserHistory}>
         <Routes>
           <Route
             path={AppRoute.Main}
@@ -48,13 +49,13 @@ function App({ reviews }: AppScreenProps): JSX.Element {
           <Route
             path={AppRoute.Favorites}
             element={
-              <PrivateRoute authorizationStatus={authorizationStatus}>
+              <PrivateRoute>
                 <FavoritesPage offers={offers} />
               </PrivateRoute>
             }
           />
         </Routes>
-      </BrowserRouter>
+      </HistoryRouter>
     </HelmetProvider>
   );
 }
