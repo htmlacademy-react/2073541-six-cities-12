@@ -1,9 +1,19 @@
-import Layout from '../../components/layout/layout';
 import LoginForm from '../../components/login-form/login-form';
+import Logo from '../../components/logo/logo';
 
-function LoginPage(): JSX.Element {
+function LoginPage() {
   return (
-    <Layout className="page page--gray page--login" pageTitle='6 cities: sign-in'>
+    <div className="page page--gray page--login">
+      <header className="header">
+        <div className="container">
+          <div className="header__wrapper">
+            <div className="header__left">
+              <Logo type='header' />
+            </div>
+          </div>
+        </div>
+      </header>
+
       <main className="page__main page__main--login">
         <div className="page__login-container container">
           <section className="login">
@@ -19,7 +29,8 @@ function LoginPage(): JSX.Element {
           </section>
         </div>
       </main>
-    </Layout>
+    </div>
   );
 }
+
 export default LoginPage;

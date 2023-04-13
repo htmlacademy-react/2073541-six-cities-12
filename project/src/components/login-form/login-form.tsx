@@ -1,18 +1,37 @@
 import cn from 'classnames';
-import { useState } from 'react';
+import { useState, ChangeEvent } from 'react';
 import { useAppDispatch } from '../../hooks';
 import { loginAction } from '../../store/api-actions';
 import styles from './login-form.module.css';
 
-const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-const isValidPassword = (password: string) => /^(?=.*[A-Za-z])(?=.*\d).+$/.test(password);
+
+type FormData = {
+  value: string;
+  pattern: RegExp;
+  error: boolean;
+  errorMessage: string;
+  label: string;
+}
 
 
 function LoginForm(): JSX.Element {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
+
+  const [formData, setFormData] = useState<Record<string, FormData>>({
+    email: {
+      value: '',
+      pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+      error: false,
+      errorMessage: 'Please enter a valid email address',
+      label: 'E-mail',
+    },
+    password: {
+      value: '',
+      pattern: /^(?=.*[A-Za-z])(?=.*\d).+$/,
+      error: false,
+      errorMessage: 'Please enter a password with at least one letter and number',
+      label: 'Password',
+    },
+  });
 
   const dispatch = useAppDispatch();
 
@@ -20,61 +39,50 @@ function LoginForm(): JSX.Element {
     event.preventDefault();
 
     dispatch(loginAction({
-      login: email,
-      password: password
+      login: formData.email.value,
+      password: formData.password.value
     }));
   };
 
-  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
 
-    if (!isValidEmail(event.target.value)) {
-      setEmailError('Please enter a valid email address');
+  const handleFieldChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = evt.target;
 
-    } else { setEmailError(''); }
-
-  };
-
-  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value);
-
-    if (!isValidPassword(event.target.value)) {
-      setPasswordError('Please enter a password with at least one letter and number');
-
-    } else { setPasswordError(''); }
+    setFormData({
+      ...formData,
+      [name]: {
+        ...formData[name],
+        error: !formData[name].pattern.test(value),
+        value: value,
+      }
+    });
 
   };
+
 
   return (
 
     <form className="login__form form" onSubmit={handleSubmit}>
-      <div className="login__input-wrapper form__input-wrapper">
-        <label className="visually-hidden">E-mail</label>
-        <input
-          className={cn('login__input form__input', { [styles.input__error]: emailError })}
-          type="email"
-          name="email"
-          placeholder="Email"
-          required
-          value={email}
-          onChange={handleEmailChange}
-        />
-        {emailError && <span className={styles.error}>{emailError}</span>}
-      </div>
-      <div className="login__input-wrapper form__input-wrapper">
-        <label className="visually-hidden">Password</label>
-        <input
-          className={cn('login__input form__input', { [styles.input__error]: passwordError })}
-          type="password"
-          name="password"
-          placeholder="Password"
-          required
-          value={password}
-          onChange={handlePasswordChange}
-        />
-        {passwordError && <span className={styles.error}>{passwordError}</span>}
-      </div>
-      <button className="login__submit form__submit button" type="submit">
+
+      {Object.keys(formData).map((name) => (
+        <div key={name} className="login__input-wrapper form__input-wrapper">
+          <label className="visually-hidden">{formData[name].label}</label>
+          <input
+            className={cn('login__input form__input', { [styles.input__error]: formData[name].error })}
+            type={name}
+            name={name}
+            placeholder={formData[name].label}
+            required
+            value={formData[name].value}
+            onChange={handleFieldChange}
+          />
+          {formData[name].error && <span className={styles.error}>{formData[name].errorMessage}</span>}
+        </div>
+      ))}
+      <button className="login__submit form__submit button"
+        type="submit"
+        disabled={formData.email.error || formData.password.error}
+      >
         Sign in
       </button>
     </form>
