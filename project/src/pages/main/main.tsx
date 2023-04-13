@@ -21,12 +21,8 @@ function MainPage(): JSX.Element {
   const offers = useAppSelector((state) => state.offers);
 
   useEffect(() => {
-    const getOffers = async () => {
-      await dispatch(fetchOfferAction());
-    };
-
-    getOffers();
-  }, []);
+    dispatch(fetchOfferAction());
+  }, [dispatch]);
 
 
   const currentCityOffers = offers.filter((offer) => offer.city.name === currentCity);
