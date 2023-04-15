@@ -36,5 +36,10 @@ enum APIRoute {
 
 const TIMEOUT_SHOW_ERROR = 2000;
 
+export enum NameSpace {
+  Offers = 'OFFERS',
+  User = 'USER',
+}
+
 
 export { TIMEOUT_SHOW_ERROR, AppRoute, AuthorizationStatus, CITIES, SortOptions, APIRoute };
