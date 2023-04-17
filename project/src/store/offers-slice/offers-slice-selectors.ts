@@ -1,3 +1,4 @@
+import { createSelector } from '@reduxjs/toolkit';
 import { State } from '../../types/state';
 import { NameSpace, FetchStatus, SortOptions, Cities } from '../../const';
 
@@ -8,3 +9,8 @@ export const getSortOption = (state: State): SortOptions => state[NameSpace.Offe
 export const getSelectedOfferId = (state: State): number | null => state[NameSpace.Offers].selectedOfferId;
 
 
+export const getOffersStatus = createSelector([getStatus], (status) => ({
+  isLoading: [FetchStatus.Idle, FetchStatus.Loading].includes(status),
+  isSuccess: status === FetchStatus.Success,
+  isError: status === FetchStatus.Failed,
+}));

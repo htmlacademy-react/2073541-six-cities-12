@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getOffers, getOffersCity, getSelectedOfferId, getSortOption, getStatus } from '../../store/offers-slice/offers-slice-selectors';
+import { getOffers, getOffersCity, getSelectedOfferId, getSortOption, getOffersStatus } from '../../store/offers-slice/offers-slice-selectors';
 import { sortOffers } from '../../utils/utils';
 import { fetchOffersAction } from '../../store/api-actions';
 import Layout from '../../components/layout/layout';
@@ -11,7 +11,7 @@ import Tabs from '../../components/tabs/tabs';
 import Sort from '../../components/sort/sort';
 import MainEmpty from '../../components/main-empty/main-empty';
 import Error from '../../components/error/error';
-import { FetchStatus } from '../../const';
+import LoadingScreen from '../loading-screen/loading-screen';
 
 
 function MainPage(): JSX.Element {
@@ -21,7 +21,7 @@ function MainPage(): JSX.Element {
   const activeCardId = useAppSelector(getSelectedOfferId);
   const currentSortOption = useAppSelector(getSortOption);
   const offers = useAppSelector(getOffers);
-  const status = useAppSelector(getStatus);
+  const status = useAppSelector(getOffersStatus);
 
 
   useEffect(() => {
@@ -32,8 +32,14 @@ function MainPage(): JSX.Element {
   const filteredOffers = offers.filter((offer) => offer.city.name === currentCity);
   const sortedOffers = sortOffers(filteredOffers, currentSortOption);
 
-  if (status === FetchStatus.Failed) {
+  if (status.isError) {
     return <Error />;
+  }
+
+  if (status.isLoading) {
+    return (
+      <LoadingScreen />
+    );
   }
 
   return (
