@@ -1,9 +1,9 @@
 import cn from 'classnames';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { changeCity } from '../../store/action';
+import { getOffers, getOffersCity, getSelectedOfferId, getSortOption } from '../../store/offers-slice/offers-slice-selectors';
 import { sortOffers } from '../../utils/utils';
-import { fetchOfferAction } from '../../store/api-actions';
+import { fetchOffersAction } from '../../store/api-actions';
 import Layout from '../../components/layout/layout';
 import Offers from '../../components/offers/offers';
 import Map from '../../components/map/map';
@@ -15,26 +15,26 @@ import MainEmpty from '../../components/main-empty/main-empty';
 function MainPage(): JSX.Element {
 
   const dispatch = useAppDispatch();
-  const currentCity = useAppSelector((state) => state.city);
-  const activeCardId = useAppSelector((state) => state.currentOfferId);
-  const currentSortOption = useAppSelector((state) => state.sortOption);
-  const offers = useAppSelector((state) => state.offers);
+  const currentCity = useAppSelector(getOffersCity);
+  const activeCardId = useAppSelector(getSelectedOfferId);
+  const currentSortOption = useAppSelector(getSortOption);
+  const offers = useAppSelector(getOffers);
+
 
   useEffect(() => {
-    dispatch(fetchOfferAction());
+    dispatch(fetchOffersAction());
   }, [dispatch]);
 
 
   const currentCityOffers = offers.filter((offer) => offer.city.name === currentCity);
   const sortedOffers = sortOffers(currentCityOffers, currentSortOption);
 
-  const handleCityChange = (city: string) => dispatch(changeCity(city));
 
   return (
     <Layout className="page--gray page--main" pageTitle='6 cities'>
       <main className={cn('page__main page__main--index', (currentCityOffers.length === 0) && 'page__main--index-empty')}>
         <h1 className="visually-hidden">Cities</h1>
-        <Tabs currentCity={currentCity} onChangeCity={handleCityChange} />
+        <Tabs currentCity={currentCity} />
         {(currentCityOffers.length > 0) ? (
           <div className="cities">
             <div className="cities__places-container container">

@@ -4,6 +4,8 @@ import { HelmetProvider } from 'react-helmet-async';
 import { useAppSelector } from '../../hooks';
 import { AuthorizationStatus, AppRoute } from '../../const';
 import { Review } from '../../types/reviews';
+import { getAuthorizationStatus } from '../../store/user-slice/user-slice-selectors';
+import { getOffers } from '../../store/offers-slice/offers-slice-selectors';
 import MainPage from '../../pages/main/main';
 import FavoritesPage from '../../pages/favorites/favorites';
 import LoginPage from '../../pages/login/login';
@@ -19,8 +21,8 @@ type AppScreenProps = {
 
 function App({ reviews }: AppScreenProps): JSX.Element {
 
-  const offers = useAppSelector((state) => state.offers);
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const offers = useAppSelector(getOffers);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   if (authorizationStatus === AuthorizationStatus.Unknown) {
     return <LoadingScreen />;

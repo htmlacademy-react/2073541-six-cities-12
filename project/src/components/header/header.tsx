@@ -1,13 +1,12 @@
 import { Link } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
 import { AuthorizationStatus } from '../../const';
+import { getAuthorizationStatus } from '../../store/user-slice/user-slice-selectors';
 import UserNotLogged from '../user-not-logged/user-not-logged';
 import UserNav from '../user-nav/user-nav';
 
 function Header(): JSX.Element {
-  const authorizationStatus = useAppSelector(
-    (state) => state.authorizationStatus
-  );
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   return (
     <header className="header">

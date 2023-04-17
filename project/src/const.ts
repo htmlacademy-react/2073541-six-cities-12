@@ -11,21 +11,21 @@ enum AuthorizationStatus {
   Unknown = 'UNKNOWN',
 }
 
-const CITIES = [
-  'Paris',
-  'Cologne',
-  'Brussels',
-  'Amsterdam',
-  'Hamburg',
-  'Dusseldorf',
-];
+enum Cities {
+  Paris = 'Paris',
+  Cologne = 'Cologne',
+  Brussels = 'Brussels',
+  Amsterdam = 'Amsterdam',
+  Hamburg = 'Hamburg',
+  Dusseldorf = 'Dusseldorf'
+}
 
-const SortOptions = {
-  POPULAR: 'Popular',
-  PRICE_LOW_TO_HIGHT: 'Price: low to high',
-  PRICE_HIGHT_TO_LOW: 'Price: high to low',
-  TOP_RATED_FIRST: 'Top rated first'
-};
+enum SortOptions {
+  Popular = 'Popular',
+  LowToHigh = 'Price: low to high',
+  HighToLow = 'Price: high to low',
+  TopRatedFirst = 'Top rated first',
+}
 
 enum APIRoute {
   Offers = '/hotels',
@@ -41,5 +41,12 @@ export enum NameSpace {
   User = 'USER',
 }
 
+export enum FetchStatus {
+  Idle = 'Idle',
+  Loading = 'Loading',
+  Success = 'Success',
+  Failed = 'Failed',
+}
 
-export { TIMEOUT_SHOW_ERROR, AppRoute, AuthorizationStatus, CITIES, SortOptions, APIRoute };
+
+export { TIMEOUT_SHOW_ERROR, AppRoute, AuthorizationStatus, Cities, SortOptions, APIRoute };

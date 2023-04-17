@@ -3,7 +3,7 @@ import { generatePath, Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { capitalize } from '../../utils/utils';
 import { useAppDispatch } from '../../hooks';
-import { selectOffer } from '../../store/action';
+import { selectOffer } from '../../store/offers-slice/offers-slice';
 import { calculateRatingPercent } from '../../utils/utils';
 
 type CardProps = {
