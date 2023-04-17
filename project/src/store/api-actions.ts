@@ -3,9 +3,11 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/state';
 import { Offer } from '../types/offers';
 import { saveToken, dropToken } from '../services/token';
-import { APIRoute } from '../const';
+import { APIRoute, AppRoute } from '../const';
 import { AuthData } from '../types/auth-data';
 import { UserData } from '../types/user-data';
+import { toast } from 'react-toastify';
+import { redirectToRoute } from './action';
 
 
 export const fetchOffersAction = createAsyncThunk<Offer[], undefined, {
@@ -40,13 +42,19 @@ export const loginAction = createAsyncThunk<UserData, AuthData, {
   extra: AxiosInstance;
 }>(
   'user/login',
-  async ({ login: email, password }, { extra: api }) => {
-    const { data } = await api.post<UserData>(APIRoute.Login, { email, password });
-    saveToken(data.token);
+  async ({ login: email, password }, { dispatch, extra: api }) => {
+    try {
+      const { data } = await api.post<UserData>(APIRoute.Login, { email, password });
+      saveToken(data.token);
+      dispatch(redirectToRoute(AppRoute.Main));
 
-    return data;
-  },
-);
+      return data;
+    } catch (err) {
+
+      toast.error('Login failed');
+      throw err;
+    }
+  });
 
 export const logoutAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;
@@ -55,8 +63,13 @@ export const logoutAction = createAsyncThunk<void, undefined, {
 }>(
   'user/logout',
   async (_arg, { extra: api }) => {
-    await api.delete(APIRoute.Logout);
-    dropToken();
+    try {
+      await api.delete(APIRoute.Logout);
+      dropToken();
+    } catch (err) {
+
+      toast.error('Logout failed');
+      throw err;
+    }
   },
 );
-
