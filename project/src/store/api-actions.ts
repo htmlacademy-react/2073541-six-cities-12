@@ -15,9 +15,13 @@ export const fetchOffersAction = createAsyncThunk<Offer[], undefined, {
 }>(
   'data/fetchOffers',
   async (_arg, { extra: api }) => {
-    const { data } = await api.get<Offer[]>(APIRoute.Offers);
-
-    return data;
+    // eslint-disable-next-line no-useless-catch
+    try {
+      const { data } = await api.get<Offer[]>(APIRoute.Offers);
+      return data;
+    } catch (err) {
+      throw err;
+    }
   }
 );
 

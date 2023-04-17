@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getOffers, getOffersCity, getSelectedOfferId, getSortOption } from '../../store/offers-slice/offers-slice-selectors';
+import { getOffers, getOffersCity, getSelectedOfferId, getSortOption, getStatus } from '../../store/offers-slice/offers-slice-selectors';
 import { sortOffers } from '../../utils/utils';
 import { fetchOffersAction } from '../../store/api-actions';
 import Layout from '../../components/layout/layout';
@@ -10,6 +10,8 @@ import Map from '../../components/map/map';
 import Tabs from '../../components/tabs/tabs';
 import Sort from '../../components/sort/sort';
 import MainEmpty from '../../components/main-empty/main-empty';
+import Error from '../../components/error/error';
+import { FetchStatus } from '../../const';
 
 
 function MainPage(): JSX.Element {
@@ -19,6 +21,7 @@ function MainPage(): JSX.Element {
   const activeCardId = useAppSelector(getSelectedOfferId);
   const currentSortOption = useAppSelector(getSortOption);
   const offers = useAppSelector(getOffers);
+  const status = useAppSelector(getStatus);
 
 
   useEffect(() => {
@@ -26,28 +29,31 @@ function MainPage(): JSX.Element {
   }, [dispatch]);
 
 
-  const currentCityOffers = offers.filter((offer) => offer.city.name === currentCity);
-  const sortedOffers = sortOffers(currentCityOffers, currentSortOption);
+  const filteredOffers = offers.filter((offer) => offer.city.name === currentCity);
+  const sortedOffers = sortOffers(filteredOffers, currentSortOption);
 
+  if (status === FetchStatus.Failed) {
+    return <Error />;
+  }
 
   return (
     <Layout className="page--gray page--main" pageTitle='6 cities'>
-      <main className={cn('page__main page__main--index', (currentCityOffers.length === 0) && 'page__main--index-empty')}>
+      <main className={cn('page__main page__main--index', (filteredOffers.length === 0) && 'page__main--index-empty')}>
         <h1 className="visually-hidden">Cities</h1>
         <Tabs currentCity={currentCity} />
-        {(currentCityOffers.length > 0) ? (
+        {(filteredOffers.length > 0) ? (
           <div className="cities">
             <div className="cities__places-container container">
               <section className="cities__places places">
                 <h2 className="visually-hidden">Places</h2>
-                <b className="places__found">{currentCityOffers.length} places to stay in {currentCity}</b>
+                <b className="places__found">{filteredOffers.length} places to stay in {currentCity}</b>
                 <Sort />
                 <div className="cities__places-list places__list tabs__content">
                   <Offers offers={sortedOffers} cardType="cities" />
                 </div>
               </section>
               <div className="cities__right-section">
-                <Map offers={currentCityOffers} currentOfferId={activeCardId} className="cities__map" />
+                <Map offers={filteredOffers} currentOfferId={activeCardId} className="cities__map" />
               </div>
             </div>
           </div>
