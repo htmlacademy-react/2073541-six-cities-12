@@ -2,8 +2,8 @@ import cn from 'classnames';
 import { SortOptions } from '../../const';
 import { useState, useRef, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { changeSort } from '../../store/offers-slice/offers-slice';
-import { getSortOption } from '../../store/offers-slice/offers-slice-selectors';
+import { changeSort } from '../../store/app-slice/app-slice';
+import { getSortOption } from '../../store/app-slice/app-slice-selectors';
 
 
 function Sort(): JSX.Element {

@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { fetchOffersAction } from '../api-actions';
 import { NameSpace, FetchStatus, SortOptions, Cities } from '../../const';
 import { Offer } from '../../types/offers';
@@ -23,17 +23,7 @@ const initialState: OffersData = {
 export const offersSlice = createSlice({
   name: NameSpace.Offers,
   initialState,
-  reducers: {
-    changeSort: (state, action: PayloadAction<SortOptions>) => {
-      state.sortOption = action.payload;
-    },
-    changeCity(state, action: PayloadAction<Cities>) {
-      state.city = action.payload;
-    },
-    selectOffer: (state, action: PayloadAction<number | null>) => {
-      state.selectedOfferId = action.payload;
-    }
-  },
+  reducers: {},
   extraReducers(builder) {
     builder
       .addCase(fetchOffersAction.pending, (state) => {
@@ -48,8 +38,3 @@ export const offersSlice = createSlice({
       });
   }
 });
-
-
-export const { changeCity, changeSort, selectOffer } = offersSlice.actions;
-
-

@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import { Cities } from '../../const';
 import { useAppDispatch } from '../../hooks';
-import { changeCity } from '../../store/offers-slice/offers-slice';
+import { changeCity } from '../../store/app-slice/app-slice';
 
 
 type TabsProps = {

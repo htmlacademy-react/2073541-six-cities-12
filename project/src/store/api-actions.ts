@@ -9,29 +9,25 @@ import { UserData } from '../types/user-data';
 import { toast } from 'react-toastify';
 import { redirectToRoute } from './action';
 
-
-export const fetchOffersAction = createAsyncThunk<Offer[], undefined, {
+type ThunkOptions = {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
-}>(
+}
+
+export const fetchOffersAction = createAsyncThunk<Offer[], undefined, ThunkOptions>(
   'data/fetchOffers',
   async (_arg, { extra: api }) => {
-    // eslint-disable-next-line no-useless-catch
     try {
       const { data } = await api.get<Offer[]>(APIRoute.Offers);
       return data;
     } catch (err) {
-      throw err;
+      throw new Error();
     }
   }
 );
 
-export const checkAuthAction = createAsyncThunk<UserData, undefined, {
-  dispatch: AppDispatch;
-  state: State;
-  extra: AxiosInstance;
-}>('user/checkAuth', async (_arg, { extra: api }) => {
+export const checkAuthAction = createAsyncThunk<UserData, undefined, ThunkOptions>('user/checkAuth', async (_arg, { extra: api }) => {
   const { data } = await api.get<UserData>(APIRoute.Login);
   return data;
 });
@@ -56,11 +52,7 @@ export const loginAction = createAsyncThunk<UserData, AuthData, {
     }
   });
 
-export const logoutAction = createAsyncThunk<void, undefined, {
-  dispatch: AppDispatch;
-  state: State;
-  extra: AxiosInstance;
-}>(
+export const logoutAction = createAsyncThunk<void, undefined, ThunkOptions>(
   'user/logout',
   async (_arg, { extra: api }) => {
     try {

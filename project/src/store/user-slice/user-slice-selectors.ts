@@ -9,7 +9,7 @@ export const getIsAuthorized = (state: State): boolean =>
   state[NameSpace.User].authorizationStatus === AuthorizationStatus.Auth;
 
 export const getIsLoading = (state: State): boolean =>
-  state[NameSpace.User].authorizationStatus === AuthorizationStatus.Unknown;
+  state[NameSpace.User].authorizationStatus === AuthorizationStatus.Loading;
 
 
 export const getUserData = (state: State): UserData | null =>

@@ -1,7 +1,8 @@
 import cn from 'classnames';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getOffers, getOffersCity, getSelectedOfferId, getSortOption, getOffersStatus } from '../../store/offers-slice/offers-slice-selectors';
+import { getOffers, getOffersStatus } from '../../store/offers-slice/offers-slice-selectors';
+import { getOffersCity, getSelectedOfferId, getSortOption, } from '../../store/app-slice/app-slice-selectors';
 import { sortOffers } from '../../utils/utils';
 import { fetchOffersAction } from '../../store/api-actions';
 import Layout from '../../components/layout/layout';
@@ -31,6 +32,7 @@ function MainPage(): JSX.Element {
 
   const filteredOffers = offers.filter((offer) => offer.city.name === currentCity);
   const sortedOffers = sortOffers(filteredOffers, currentSortOption);
+  const isEmpty = filteredOffers.length === 0;
 
   if (status.isError) {
     return <Error />;
@@ -44,10 +46,10 @@ function MainPage(): JSX.Element {
 
   return (
     <Layout className="page--gray page--main" pageTitle='6 cities'>
-      <main className={cn('page__main page__main--index', (filteredOffers.length === 0) && 'page__main--index-empty')}>
+      <main className={cn('page__main page__main--index', isEmpty && 'page__main--index-empty')}>
         <h1 className="visually-hidden">Cities</h1>
         <Tabs currentCity={currentCity} />
-        {(filteredOffers.length > 0) ? (
+        {!isEmpty ? (
           <div className="cities">
             <div className="cities__places-container container">
               <section className="cities__places places">

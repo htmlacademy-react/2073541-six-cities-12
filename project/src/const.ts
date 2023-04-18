@@ -9,6 +9,7 @@ enum AuthorizationStatus {
   Auth = 'AUTH',
   NoAuth = 'NO_AUTH',
   Unknown = 'UNKNOWN',
+  Loading = 'LOADING',
 }
 
 enum Cities {
@@ -39,6 +40,7 @@ const TIMEOUT_SHOW_ERROR = 2000;
 export enum NameSpace {
   Offers = 'OFFERS',
   User = 'USER',
+  App = 'APP'
 }
 
 export enum FetchStatus {
