@@ -40,7 +40,8 @@ const TIMEOUT_SHOW_ERROR = 2000;
 export enum NameSpace {
   Offers = 'OFFERS',
   User = 'USER',
-  App = 'APP'
+  App = 'APP',
+  Room = 'ROOM'
 }
 
 export enum FetchStatus {

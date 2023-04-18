@@ -1,7 +1,10 @@
 import { Navigate, useParams } from 'react-router-dom';
-import { Offer } from '../../types/offers';
+import { useEffect } from 'react';
 import { Review } from '../../types/reviews';
 import { calculateRatingPercent, capitalize } from '../../utils/utils';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { getNearOffers, getOffer, getNearOffersStatus, getOfferStatus } from '../../store/room-slice/room-slice-selectors';
+import { fetchOfferAction, fetchNearOffersAction } from '../../store/api-actions';
 import Layout from '../../components/layout/layout';
 import Offers from '../../components/offers/offers';
 import Map from '../../components/map/map';
@@ -9,19 +12,30 @@ import Reviews from '../../components/reviews/reviews';
 import { AppRoute } from '../../const';
 
 
-const NEAR_OFFERS_AMOUNT = 3;
+//const NEAR_OFFERS_AMOUNT = 3;
 const MAX_PHOTOS_AMOUNT = 6;
 
 type RoomPageProps = {
-  offers: Offer[];
   reviews: Review[];
 }
 
-function RoomPage({ offers, reviews }: RoomPageProps): JSX.Element {
+function RoomPage({ reviews }: RoomPageProps): JSX.Element {
 
-  const nearOffers = offers.slice(0, NEAR_OFFERS_AMOUNT);
-  const { id } = useParams();
-  const offer: Offer | undefined = offers.find((item) => item.id === Number(id));
+  const dispatch = useAppDispatch();
+
+  const id = Number(useParams().id);
+  const offer = useAppSelector(getOffer);
+  const offerStatus = useAppSelector(getOfferStatus);
+  const nearOffers = useAppSelector(getNearOffers);
+  const nearOffersStatus = useAppSelector(getNearOffersStatus);
+
+  useEffect(() => {
+    dispatch(fetchOfferAction(id));
+    dispatch(fetchNearOffersAction(id));
+  }, []);
+
+
+  console.log(offerStatus, nearOffersStatus);
 
   if (!offer) {
     return (<Navigate to={AppRoute.Main} />);
@@ -29,6 +43,7 @@ function RoomPage({ offers, reviews }: RoomPageProps): JSX.Element {
 
   const { images, rating, title, type, bedrooms, maxAdults, price, goods, description } = offer;
   const { avatarUrl, isPro, name } = offer.host;
+  console.log(offer);
 
   return (
     <Layout className="page" pageTitle='6 cities: property'>
@@ -64,7 +79,7 @@ function RoomPage({ offers, reviews }: RoomPageProps): JSX.Element {
                   <span style={{ width: calculateRatingPercent(rating) }}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
-                <span className="property__rating-value rating__value">4.8</span>
+                <span className="property__rating-value rating__value">{rating}</span>
               </div>
               <ul className="property__features">
                 <li className="property__feature property__feature--entire">

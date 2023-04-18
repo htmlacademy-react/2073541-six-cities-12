@@ -65,3 +65,35 @@ export const logoutAction = createAsyncThunk<void, undefined, ThunkOptions>(
     }
   },
 );
+
+export const fetchOfferAction = createAsyncThunk<
+  Offer,
+  number,
+  ThunkOptions
+>('data/fetchOffer', async (id, { dispatch, extra: api }) => {
+  try {
+    const { data } = await api.get<Offer>(`${APIRoute.Offers}/${id}`);
+    return data;
+  } catch (err) {
+
+    toast.error('Could not load the offer');
+    throw err;
+  }
+});
+
+export const fetchNearOffersAction = createAsyncThunk<
+  Offer[],
+  number,
+  ThunkOptions
+>('data/fetchNearOffers', async (id, { dispatch, extra: api }) => {
+  try {
+    const { data } = await api.get<Offer[]>(
+      `${APIRoute.Offers}/${id}/nearby`
+    );
+    return data;
+  } catch (err) {
+
+    toast.error('Could not load near offers');
+    throw err;
+  }
+});
