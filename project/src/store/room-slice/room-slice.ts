@@ -33,15 +33,9 @@ export const roomSlice = createSlice({
       .addCase(fetchOfferAction.rejected, (state) => {
         state.offerStatus = FetchStatus.Failed;
       })
-      .addCase(fetchNearOffersAction.pending, (state) => {
-        state.nearOffersStatus = FetchStatus.Loading;
-      })
       .addCase(fetchNearOffersAction.fulfilled, (state, action) => {
         state.nearOffersStatus = FetchStatus.Success;
         state.nearOffers = action.payload;
-      })
-      .addCase(fetchNearOffersAction.rejected, (state) => {
-        state.nearOffersStatus = FetchStatus.Failed;
       });
   },
 });

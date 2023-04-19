@@ -51,7 +51,7 @@ function App({ reviews }: AppScreenProps): JSX.Element {
           />
           <Route
             path={AppRoute.Room}
-            element={<RoomPage reviews={reviews} />}
+            element={<RoomPage />}
           />
           <Route
             path="*"

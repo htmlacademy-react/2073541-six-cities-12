@@ -30,7 +30,7 @@ enum SortOptions {
 
 enum APIRoute {
   Offers = '/hotels',
-  Comments = '/comments',
+  Reviews = '/comments',
   Login = '/login',
   Logout = '/logout'
 }
@@ -41,7 +41,8 @@ export enum NameSpace {
   Offers = 'OFFERS',
   User = 'USER',
   App = 'APP',
-  Room = 'ROOM'
+  Room = 'ROOM',
+  Reviews = 'REVIEWS'
 }
 
 export enum FetchStatus {

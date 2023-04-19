@@ -11,6 +11,5 @@ export const getIsAuthorized = (state: State): boolean =>
 export const getIsLoading = (state: State): boolean =>
   state[NameSpace.User].authorizationStatus === AuthorizationStatus.Loading;
 
-
 export const getUserData = (state: State): UserData | null =>
   state[NameSpace.User].user;

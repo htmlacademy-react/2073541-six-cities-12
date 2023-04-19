@@ -1,25 +1,20 @@
-import { Navigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
-import { Review } from '../../types/reviews';
 import { calculateRatingPercent, capitalize } from '../../utils/utils';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getNearOffers, getOffer, getNearOffersStatus, getOfferStatus } from '../../store/room-slice/room-slice-selectors';
-import { fetchOfferAction, fetchNearOffersAction } from '../../store/api-actions';
+import { getNearOffers, getOffer, getOfferStatus } from '../../store/room-slice/room-slice-selectors';
+import { fetchOfferAction, fetchNearOffersAction, fetchReviewsAction } from '../../store/api-actions';
+import { getReviews } from '../../store/reviews-slice/reviews-slice-selectors';
 import Layout from '../../components/layout/layout';
 import Offers from '../../components/offers/offers';
 import Map from '../../components/map/map';
 import Reviews from '../../components/reviews/reviews';
-import { AppRoute } from '../../const';
+import LoadingScreen from '../loading-screen/loading-screen';
 
 
-//const NEAR_OFFERS_AMOUNT = 3;
 const MAX_PHOTOS_AMOUNT = 6;
 
-type RoomPageProps = {
-  reviews: Review[];
-}
-
-function RoomPage({ reviews }: RoomPageProps): JSX.Element {
+function RoomPage(): JSX.Element {
 
   const dispatch = useAppDispatch();
 
@@ -27,23 +22,22 @@ function RoomPage({ reviews }: RoomPageProps): JSX.Element {
   const offer = useAppSelector(getOffer);
   const offerStatus = useAppSelector(getOfferStatus);
   const nearOffers = useAppSelector(getNearOffers);
-  const nearOffersStatus = useAppSelector(getNearOffersStatus);
+  const reviews = useAppSelector(getReviews);
 
   useEffect(() => {
     dispatch(fetchOfferAction(id));
     dispatch(fetchNearOffersAction(id));
-  }, []);
+    dispatch(fetchReviewsAction(id));
+  }, [id, dispatch]);
 
 
-  console.log(offerStatus, nearOffersStatus);
-
-  if (!offer) {
-    return (<Navigate to={AppRoute.Main} />);
+  if (!offer || offerStatus.isLoading) {
+    return <LoadingScreen />;
   }
 
   const { images, rating, title, type, bedrooms, maxAdults, price, goods, description } = offer;
   const { avatarUrl, isPro, name } = offer.host;
-  console.log(offer);
+
 
   return (
     <Layout className="page" pageTitle='6 cities: property'>
@@ -126,7 +120,7 @@ function RoomPage({ reviews }: RoomPageProps): JSX.Element {
                   </p>
                 </div>
               </div>
-              <Reviews reviews={reviews} />
+              <Reviews reviews={reviews} id={id} />
             </div>
           </div>
           <Map offers={[...nearOffers, offer]} currentOfferId={Number(id)} className="property__map" />

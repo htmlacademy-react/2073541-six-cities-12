@@ -40,7 +40,7 @@ function CitiesCard({ offer, cardType }: CardProps): JSX.Element {
           <span>Premium</span>
         </div>)}
       <div className={`${cardType}__image-wrapper place-card__image-wrapper`}>
-        <Link to={generatePath(AppRoute.Room, { id: `${offer.id}` })}>
+        <Link to={generatePath(AppRoute.Room, { id: `${id}` })}>
           <img
             className="place-card__image"
             src={images[0]}
