@@ -1,4 +1,5 @@
 import { Offer } from '../types/offers';
+import { Review } from '../types/reviews';
 
 function calculateRatingPercent(rating: number, maxRating = 5): string {
   return `${rating / maxRating * 100}%`;
@@ -31,4 +32,9 @@ function sortOffers(offers: Offer[], sortBy: string): Offer[] {
   }
 }
 
-export { calculateRatingPercent, formatDate, formatDateTime, capitalize, sortOffers };
+function sortReviews(reviews: Review[]): Review[] {
+  return [...reviews].sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
+}
+
+
+export { sortReviews, calculateRatingPercent, formatDate, formatDateTime, capitalize, sortOffers };

@@ -1,3 +1,4 @@
+
 export type UserData = {
   id: number;
   name: string;
@@ -6,3 +7,5 @@ export type UserData = {
   email: string;
   token: string;
 };
+
+

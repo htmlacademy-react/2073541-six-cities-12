@@ -2,12 +2,14 @@ import cn from 'classnames';
 import { SortOptions } from '../../const';
 import { useState, useRef, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { changeSort } from '../../store/action';
+import { changeSort } from '../../store/app-slice/app-slice';
+import { getSortOption } from '../../store/app-slice/app-slice-selectors';
+
 
 function Sort(): JSX.Element {
   const [open, setOpen] = useState(false);
   const dispatch = useAppDispatch();
-  const currentSortOption = useAppSelector((state) => state.sortOption);
+  const currentSortOption = useAppSelector(getSortOption);
   const dropdownRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
@@ -24,7 +26,7 @@ function Sort(): JSX.Element {
     };
   }, [dropdownRef]);
 
-  const handleSortClick = (option: string) => {
+  const handleSortClick = (option: SortOptions) => {
     dispatch(changeSort(option));
     setOpen(!open);
   };

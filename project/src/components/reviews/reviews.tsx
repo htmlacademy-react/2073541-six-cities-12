@@ -1,12 +1,17 @@
-import ReviewForm from '../review-form/review-form';
+import { useAppSelector } from '../../hooks';
 import { Review } from '../../types/reviews';
+import { getIsAuthorized } from '../../store/user-slice/user-slice-selectors';
+import ReviewForm from '../review-form/review-form';
 import ReviewItem from '../review-item/review-item';
 
 type ReviewsProps = {
   reviews: Review[];
+  id: number;
 };
 
-function Reviews({ reviews }: ReviewsProps): JSX.Element {
+function Reviews({ reviews, id }: ReviewsProps): JSX.Element {
+
+  const isAuth = useAppSelector(getIsAuthorized);
 
   return (
     <section className="property__reviews reviews">
@@ -19,7 +24,7 @@ function Reviews({ reviews }: ReviewsProps): JSX.Element {
           />
         ))}
       </ul>
-      <ReviewForm />
+      {isAuth && <ReviewForm id={id} />}
     </section>
   );
 }

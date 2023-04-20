@@ -1,7 +1,8 @@
 import cn from 'classnames';
 import { useState, ChangeEvent } from 'react';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { loginAction } from '../../store/api-actions';
+import { getIsLoading } from '../../store/user-slice/user-slice-selectors';
 import styles from './login-form.module.css';
 
 
@@ -32,6 +33,8 @@ function LoginForm(): JSX.Element {
       label: 'Password',
     },
   });
+
+  const isLoading = useAppSelector(getIsLoading);
 
   const dispatch = useAppDispatch();
 
@@ -83,7 +86,7 @@ function LoginForm(): JSX.Element {
         type="submit"
         disabled={formData.email.error || formData.password.error}
       >
-        Sign in
+        {isLoading ? 'Signing in...' : 'Sign in'}
       </button>
     </form>
 

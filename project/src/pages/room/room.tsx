@@ -1,34 +1,45 @@
-import { Navigate, useParams } from 'react-router-dom';
-import { Offer } from '../../types/offers';
-import { Review } from '../../types/reviews';
+import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
 import { calculateRatingPercent, capitalize } from '../../utils/utils';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { getNearOffers, getOffer, getOfferStatus } from '../../store/room-slice/room-slice-selectors';
+import { fetchOfferAction, fetchNearOffersAction, fetchReviewsAction } from '../../store/api-actions';
+import { getReviews } from '../../store/reviews-slice/reviews-slice-selectors';
+import { sortReviews } from '../../utils/utils';
 import Layout from '../../components/layout/layout';
 import Offers from '../../components/offers/offers';
 import Map from '../../components/map/map';
 import Reviews from '../../components/reviews/reviews';
-import { AppRoute } from '../../const';
+import LoadingScreen from '../loading-screen/loading-screen';
 
 
-const NEAR_OFFERS_AMOUNT = 3;
 const MAX_PHOTOS_AMOUNT = 6;
+const MAX_REVIEWS_AMOUNT = 10;
 
-type RoomPageProps = {
-  offers: Offer[];
-  reviews: Review[];
-}
+function RoomPage(): JSX.Element {
 
-function RoomPage({ offers, reviews }: RoomPageProps): JSX.Element {
+  const dispatch = useAppDispatch();
 
-  const nearOffers = offers.slice(0, NEAR_OFFERS_AMOUNT);
-  const { id } = useParams();
-  const offer: Offer | undefined = offers.find((item) => item.id === Number(id));
+  const id = Number(useParams().id);
+  const offer = useAppSelector(getOffer);
+  const offerStatus = useAppSelector(getOfferStatus);
+  const nearOffers = useAppSelector(getNearOffers);
+  const reviews = useAppSelector(getReviews);
 
-  if (!offer) {
-    return (<Navigate to={AppRoute.Main} />);
+  useEffect(() => {
+    dispatch(fetchOfferAction(id));
+    dispatch(fetchNearOffersAction(id));
+    dispatch(fetchReviewsAction(id));
+  }, [id, dispatch]);
+
+
+  if (!offer || offerStatus.isLoading) {
+    return <LoadingScreen />;
   }
 
   const { images, rating, title, type, bedrooms, maxAdults, price, goods, description } = offer;
   const { avatarUrl, isPro, name } = offer.host;
+  const sortedReviews = sortReviews(reviews).slice(0, MAX_REVIEWS_AMOUNT);
 
   return (
     <Layout className="page" pageTitle='6 cities: property'>
@@ -64,7 +75,7 @@ function RoomPage({ offers, reviews }: RoomPageProps): JSX.Element {
                   <span style={{ width: calculateRatingPercent(rating) }}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
-                <span className="property__rating-value rating__value">4.8</span>
+                <span className="property__rating-value rating__value">{rating}</span>
               </div>
               <ul className="property__features">
                 <li className="property__feature property__feature--entire">
@@ -111,7 +122,7 @@ function RoomPage({ offers, reviews }: RoomPageProps): JSX.Element {
                   </p>
                 </div>
               </div>
-              <Reviews reviews={reviews} />
+              <Reviews reviews={sortedReviews} id={id} />
             </div>
           </div>
           <Map offers={[...nearOffers, offer]} currentOfferId={Number(id)} className="property__map" />
