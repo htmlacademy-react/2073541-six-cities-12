@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react';
+import { Fragment, useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { postReviewAction } from '../../store/api-actions';
 import { getPostStatus } from '../../store/reviews-slice/reviews-slice-selectors';
@@ -27,6 +27,15 @@ function ReviewForm({ id }: ReviewFormProps): JSX.Element {
     rating: 0,
     comment: ''
   });
+
+  useEffect(() => {
+    if (status.isSuccess) {
+      setReviewData({
+        rating: 0,
+        comment: ''
+      });
+    }
+  }, [status]);
 
   const isFormValid = (reviewData.comment.length >= MIN_CHARS && reviewData.comment.length <= MAX_CHARS) && (reviewData.rating !== 0);
   const isButtonDisabled = !isFormValid || status.isLoading;
@@ -61,7 +70,7 @@ function ReviewForm({ id }: ReviewFormProps): JSX.Element {
       </label>
       <div className="reviews__rating-form form__rating">
         {RATINGS.map((rating) => (
-          <React.Fragment key={rating.value}>
+          <Fragment key={rating.value}>
             <input
               onChange={handleInputChange}
               className="form__rating-input visually-hidden"
@@ -69,13 +78,15 @@ function ReviewForm({ id }: ReviewFormProps): JSX.Element {
               value={rating.value}
               id={`${rating.value}-stars`}
               type="radio"
+              disabled={status.isLoading}
+              checked={+reviewData.rating === rating.value}
             />
             <label htmlFor={`${rating.value}-stars`} className="reviews__rating-label form__rating-label" title={rating.title}>
               <svg className="form__star-image" width="37" height="33">
                 <use xlinkHref="#icon-star"></use>
               </svg>
             </label>
-          </React.Fragment>
+          </Fragment>
         ))}
       </div>
       <textarea
@@ -85,6 +96,7 @@ function ReviewForm({ id }: ReviewFormProps): JSX.Element {
         name="comment"
         placeholder="Tell how was your stay, what you like and what can be improved"
         value={reviewData.comment}
+        disabled={status.isLoading}
       />
       <div className="reviews__button-wrapper">
         <p className="reviews__help">

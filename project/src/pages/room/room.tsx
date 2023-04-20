@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getNearOffers, getOffer, getOfferStatus } from '../../store/room-slice/room-slice-selectors';
 import { fetchOfferAction, fetchNearOffersAction, fetchReviewsAction } from '../../store/api-actions';
 import { getReviews } from '../../store/reviews-slice/reviews-slice-selectors';
+import { sortReviews } from '../../utils/utils';
 import Layout from '../../components/layout/layout';
 import Offers from '../../components/offers/offers';
 import Map from '../../components/map/map';
@@ -13,6 +14,7 @@ import LoadingScreen from '../loading-screen/loading-screen';
 
 
 const MAX_PHOTOS_AMOUNT = 6;
+const MAX_REVIEWS_AMOUNT = 10;
 
 function RoomPage(): JSX.Element {
 
@@ -37,7 +39,7 @@ function RoomPage(): JSX.Element {
 
   const { images, rating, title, type, bedrooms, maxAdults, price, goods, description } = offer;
   const { avatarUrl, isPro, name } = offer.host;
-
+  const sortedReviews = sortReviews(reviews).slice(0, MAX_REVIEWS_AMOUNT);
 
   return (
     <Layout className="page" pageTitle='6 cities: property'>
@@ -120,7 +122,7 @@ function RoomPage(): JSX.Element {
                   </p>
                 </div>
               </div>
-              <Reviews reviews={reviews} id={id} />
+              <Reviews reviews={sortedReviews} id={id} />
             </div>
           </div>
           <Map offers={[...nearOffers, offer]} currentOfferId={Number(id)} className="property__map" />
