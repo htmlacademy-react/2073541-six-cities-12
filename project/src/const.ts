@@ -32,7 +32,8 @@ enum APIRoute {
   Offers = '/hotels',
   Reviews = '/comments',
   Login = '/login',
-  Logout = '/logout'
+  Logout = '/logout',
+  Favorites = '/favorite'
 }
 
 const TIMEOUT_SHOW_ERROR = 2000;
@@ -42,7 +43,8 @@ export enum NameSpace {
   User = 'USER',
   App = 'APP',
   Room = 'ROOM',
-  Reviews = 'REVIEWS'
+  Reviews = 'REVIEWS',
+  Favorites = 'FAVORITES',
 }
 
 export enum FetchStatus {

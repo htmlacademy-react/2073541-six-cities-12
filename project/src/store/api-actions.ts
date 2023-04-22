@@ -34,10 +34,16 @@ export const fetchOffersAction = createAsyncThunk<Offer[], undefined, ThunkOptio
   }
 );
 
-export const checkAuthAction = createAsyncThunk<UserData, undefined, ThunkOptions>('user/checkAuth', async (_arg, { extra: api }) => {
-  const { data } = await api.get<UserData>(APIRoute.Login);
-  return data;
-});
+export const checkAuthAction = createAsyncThunk<
+  UserData,
+  undefined,
+  ThunkOptions
+>(
+  'user/checkAuth', async (_arg, { dispatch, extra: api }) => {
+    const { data } = await api.get<UserData>(APIRoute.Login);
+    dispatch(fetchFavoritesAction());
+    return data;
+  });
 
 export const loginAction = createAsyncThunk<UserData, AuthData, {
   dispatch: AppDispatch;
@@ -134,4 +140,45 @@ export const postReviewAction = createAsyncThunk<
     }
   }
 );
+
+export const fetchFavoritesAction = createAsyncThunk<
+  Offer[],
+  undefined,
+  ThunkOptions
+>('data/fetchFavorites', async (_arg, { extra: api }) => {
+  try {
+    const { data } = await api.get<Offer[]>(APIRoute.Favorites);
+    return data;
+  } catch (err) {
+    throw new Error();
+  }
+});
+
+export const addToFavoritesAction = createAsyncThunk<
+  Offer,
+  { id: number },
+  ThunkOptions
+>('data/addToFavorites', async ({ id }, { extra: api }) => {
+  try {
+    const { data } = await api.post<Offer>(`${APIRoute.Favorites}/${id}/1`);
+    return data;
+  } catch (err) {
+    toast.error('Could not add to favorites');
+    throw new Error();
+  }
+});
+
+export const removeFromFavoritesAction = createAsyncThunk<
+  Offer,
+  { id: number },
+  ThunkOptions
+>('data/removeFromFavorites', async ({ id }, { extra: api }) => {
+  try {
+    const { data } = await api.post<Offer>(`${APIRoute.Favorites}/${id}/0`);
+    return data;
+  } catch (err) {
+    toast.error('Failed to remove from favorites');
+    throw new Error();
+  }
+});
 

@@ -3,9 +3,9 @@ import { Route, Routes } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { AuthorizationStatus, AppRoute } from '../../const';
-import { Review } from '../../types/reviews';
 import { getAuthorizationStatus } from '../../store/user-slice/user-slice-selectors';
-import { getOffers } from '../../store/offers-slice/offers-slice-selectors';
+import { useEffect } from 'react';
+import { checkAuthAction } from '../../store/api-actions';
 import MainPage from '../../pages/main/main';
 import FavoritesPage from '../../pages/favorites/favorites';
 import LoginPage from '../../pages/login/login';
@@ -15,18 +15,11 @@ import PrivateRoute from '../private-route/private-route';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
 import HistoryRouter from '../history-route/history-route';
 
-import { useEffect } from 'react';
-import { checkAuthAction } from '../../store/api-actions';
 
-type AppScreenProps = {
-  reviews: Review[];
-}
-
-function App({ reviews }: AppScreenProps): JSX.Element {
+function App(): JSX.Element {
 
   const dispatch = useAppDispatch();
 
-  const offers = useAppSelector(getOffers);
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   useEffect(() => {
@@ -61,7 +54,7 @@ function App({ reviews }: AppScreenProps): JSX.Element {
             path={AppRoute.Favorites}
             element={
               <PrivateRoute>
-                <FavoritesPage offers={offers} />
+                <FavoritesPage />
               </PrivateRoute>
             }
           />
