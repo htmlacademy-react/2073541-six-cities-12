@@ -5,7 +5,6 @@ import { generatePath, Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { capitalize } from '../../utils/utils';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { selectOffer } from '../../store/app-slice/app-slice';
 import { calculateRatingPercent } from '../../utils/utils';
 import { getIsAuthorized } from '../../store/user-slice/user-slice-selectors';
 import { addToFavoritesAction } from '../../store/api-actions';
@@ -13,6 +12,8 @@ import { addToFavoritesAction } from '../../store/api-actions';
 type CardProps = {
   offer: Offer;
   cardType: 'cities' | 'favorites' | 'near-places';
+  onMouseEnter?: (activeCard: number) => void;
+  onMouseLeave?: (activeCard: number | null) => void;
 }
 
 const sizes = {
@@ -31,7 +32,7 @@ const sizes = {
 };
 
 
-function CitiesCard({ offer, cardType }: CardProps): JSX.Element {
+function CitiesCard({ offer, cardType, onMouseEnter, onMouseLeave }: CardProps): JSX.Element {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -55,7 +56,7 @@ function CitiesCard({ offer, cardType }: CardProps): JSX.Element {
   };
 
   return (
-    <article className={`${cardType}__card place-card`} onMouseEnter={() => dispatch(selectOffer(id))} onMouseLeave={() => dispatch(selectOffer(null))}>
+    <article className={`${cardType}__card place-card`} onMouseEnter={onMouseEnter && (() => onMouseEnter(id))} onMouseLeave={onMouseLeave && (() => onMouseLeave(null))}>
       {isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>

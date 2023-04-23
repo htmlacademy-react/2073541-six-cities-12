@@ -1,8 +1,8 @@
 import cn from 'classnames';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getOffers, getOffersStatus } from '../../store/offers-slice/offers-slice-selectors';
-import { getOffersCity, getSelectedOfferId, getSortOption, } from '../../store/app-slice/app-slice-selectors';
+import { getOffersCity, getSortOption, } from '../../store/app-slice/app-slice-selectors';
 import { sortOffers } from '../../utils/utils';
 import { fetchOffersAction } from '../../store/api-actions';
 import Layout from '../../components/layout/layout';
@@ -16,10 +16,10 @@ import LoadingScreen from '../loading-screen/loading-screen';
 
 
 function MainPage(): JSX.Element {
+  const [activeCardId, setActiveCardId] = useState<number | null>(null);
 
   const dispatch = useAppDispatch();
   const currentCity = useAppSelector(getOffersCity);
-  const activeCardId = useAppSelector(getSelectedOfferId);
   const currentSortOption = useAppSelector(getSortOption);
   const offers = useAppSelector(getOffers);
   const status = useAppSelector(getOffersStatus);
@@ -57,7 +57,7 @@ function MainPage(): JSX.Element {
                 <b className="places__found">{filteredOffers.length} places to stay in {currentCity}</b>
                 <Sort />
                 <div className="cities__places-list places__list tabs__content">
-                  <Offers offers={sortedOffers} cardType="cities" />
+                  <Offers offers={sortedOffers} cardType="cities" onMouseEnter={setActiveCardId} onMouseLeave={setActiveCardId} />
                 </div>
               </section>
               <div className="cities__right-section">
