@@ -5,13 +5,11 @@ import { NameSpace, SortOptions, Cities } from '../../const';
 export type AppData = {
   city: Cities;
   sortOption: SortOptions;
-  selectedOfferId: number | null;
 };
 
 const initialState: AppData = {
   city: Cities.Paris,
   sortOption: SortOptions.Popular,
-  selectedOfferId: null,
 };
 
 export const appSlice = createSlice({
