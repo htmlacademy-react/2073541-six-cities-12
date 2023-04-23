@@ -16,10 +16,15 @@ type ThunkOptions = {
   extra: AxiosInstance;
 }
 
-type ReveiwData = {
+type ReviewData = {
   comment: string;
   rating: number;
   id: number;
+}
+
+type FavoritesData = {
+  id: number;
+  status: number;
 }
 
 export const fetchOffersAction = createAsyncThunk<Offer[], undefined, ThunkOptions>(
@@ -56,6 +61,7 @@ export const loginAction = createAsyncThunk<UserData, AuthData, {
       const { data } = await api.post<UserData>(APIRoute.Login, { email, password });
       saveToken(data.token);
       dispatch(redirectToRoute(AppRoute.Main));
+      dispatch(fetchFavoritesAction());
 
       return data;
     } catch (err) {
@@ -71,6 +77,7 @@ export const logoutAction = createAsyncThunk<void, undefined, ThunkOptions>(
     try {
       await api.delete(APIRoute.Logout);
       dropToken();
+
     } catch (err) {
 
       toast.error('Logout failed');
@@ -126,7 +133,7 @@ export const fetchReviewsAction = createAsyncThunk<
 
 export const postReviewAction = createAsyncThunk<
   Review[],
-  ReveiwData,
+  ReviewData,
   ThunkOptions
 >(
   'data/sendReviewAction',
@@ -156,28 +163,14 @@ export const fetchFavoritesAction = createAsyncThunk<
 
 export const addToFavoritesAction = createAsyncThunk<
   Offer,
-  { id: number },
+  FavoritesData,
   ThunkOptions
->('data/addToFavorites', async ({ id }, { extra: api }) => {
+>('data/addToFavorites', async ({ id, status }, { extra: api }) => {
   try {
-    const { data } = await api.post<Offer>(`${APIRoute.Favorites}/${id}/1`);
+    const { data } = await api.post<Offer>(`${APIRoute.Favorites}/${id}/${status}`);
     return data;
   } catch (err) {
     toast.error('Could not add to favorites');
-    throw new Error();
-  }
-});
-
-export const removeFromFavoritesAction = createAsyncThunk<
-  Offer,
-  { id: number },
-  ThunkOptions
->('data/removeFromFavorites', async ({ id }, { extra: api }) => {
-  try {
-    const { data } = await api.post<Offer>(`${APIRoute.Favorites}/${id}/0`);
-    return data;
-  } catch (err) {
-    toast.error('Failed to remove from favorites');
     throw new Error();
   }
 });

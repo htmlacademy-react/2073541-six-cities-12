@@ -3,9 +3,11 @@ import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { Offer } from '../../types/offers';
 import { fetchFavoritesAction } from '../../store/api-actions';
-import { getFavorites } from '../../store/favorites-slice/favorites-slice-selectors';
+import { getFavorites, getFavoriteStatus } from '../../store/favorites-slice/favorites-slice-selectors';
 import Offers from '../../components/offers/offers';
 import Layout from '../../components/layout/layout';
+import LoadingScreen from '../loading-screen/loading-screen';
+import Error from '../../components/error/error';
 
 
 type OffersByCity = {
@@ -37,6 +39,15 @@ function FavoritesPage(): JSX.Element {
 
   const favoriteOffers = useAppSelector(getFavorites);
   const offersByCity = groupOffersByCity(favoriteOffers);
+  const status = useAppSelector(getFavoriteStatus);
+
+  if (status.isLoading) {
+    return <LoadingScreen />;
+  }
+
+  if (status.isError) {
+    return <Error />;
+  }
 
   return (
     <Layout pageTitle='6 cities: favorites'>

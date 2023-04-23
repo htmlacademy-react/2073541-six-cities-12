@@ -1,5 +1,4 @@
 import cn from 'classnames';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Offer } from '../../types/offers';
 import { generatePath, Link } from 'react-router-dom';
@@ -9,7 +8,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { selectOffer } from '../../store/app-slice/app-slice';
 import { calculateRatingPercent } from '../../utils/utils';
 import { getIsAuthorized } from '../../store/user-slice/user-slice-selectors';
-import { addToFavoritesAction, removeFromFavoritesAction } from '../../store/api-actions';
+import { addToFavoritesAction } from '../../store/api-actions';
 
 type CardProps = {
   offer: Offer;
@@ -38,23 +37,21 @@ function CitiesCard({ offer, cardType }: CardProps): JSX.Element {
   const navigate = useNavigate();
 
   const { price, rating, title, type, isPremium, id, images, isFavorite } = offer;
-  const [isActive, setActive] = useState(isFavorite);
+
   const size = sizes[cardType];
 
   const isAuth = useAppSelector(getIsAuthorized);
 
   const handleButtonClick = () => {
-    if (isAuth) {
-      if (isFavorite) {
-        dispatch(removeFromFavoritesAction({ id }));
-        setActive(!isActive);
-      } else {
-        dispatch(addToFavoritesAction({ id }));
-        setActive(!isActive);
-      }
-    } else {
+    if (!isAuth) {
       navigate(AppRoute.Login);
+
+      return;
     }
+    dispatch(addToFavoritesAction({
+      id: id,
+      status: Number(!isFavorite)
+    }));
   };
 
   return (
@@ -82,7 +79,7 @@ function CitiesCard({ offer, cardType }: CardProps): JSX.Element {
           </div>
           <button
             onClick={handleButtonClick}
-            className={cn('place-card__bookmark-button button', isActive && 'place-card__bookmark-button--active')}
+            className={cn('place-card__bookmark-button button', isFavorite && 'place-card__bookmark-button--active')}
             type="button"
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
