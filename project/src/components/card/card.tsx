@@ -1,14 +1,19 @@
+import cn from 'classnames';
+import { useNavigate } from 'react-router-dom';
 import { Offer } from '../../types/offers';
 import { generatePath, Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { capitalize } from '../../utils/utils';
-import { useAppDispatch } from '../../hooks';
-import { selectOffer } from '../../store/app-slice/app-slice';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { calculateRatingPercent } from '../../utils/utils';
+import { getIsAuthorized } from '../../store/user-slice/user-slice-selectors';
+import { addToFavoritesAction } from '../../store/api-actions';
 
 type CardProps = {
   offer: Offer;
   cardType: 'cities' | 'favorites' | 'near-places';
+  onMouseEnter?: (activeCard: number) => void;
+  onMouseLeave?: (activeCard: number | null) => void;
 }
 
 const sizes = {
@@ -27,14 +32,31 @@ const sizes = {
 };
 
 
-function CitiesCard({ offer, cardType }: CardProps): JSX.Element {
-  const { price, rating, title, type, isPremium, id, images, isFavorite } = offer;
-  const size = sizes[cardType];
-  const dispatch = useAppDispatch();
+function CitiesCard({ offer, cardType, onMouseEnter, onMouseLeave }: CardProps): JSX.Element {
 
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const { price, rating, title, type, isPremium, id, images, isFavorite } = offer;
+
+  const size = sizes[cardType];
+
+  const isAuth = useAppSelector(getIsAuthorized);
+
+  const handleButtonClick = () => {
+    if (!isAuth) {
+      navigate(AppRoute.Login);
+
+      return;
+    }
+    dispatch(addToFavoritesAction({
+      id: id,
+      status: Number(!isFavorite)
+    }));
+  };
 
   return (
-    <article className={`${cardType}__card place-card`} onMouseEnter={() => dispatch(selectOffer(id))} onMouseLeave={() => dispatch(selectOffer(null))}>
+    <article className={`${cardType}__card place-card`} onMouseEnter={onMouseEnter && (() => onMouseEnter(id))} onMouseLeave={onMouseLeave && (() => onMouseLeave(null))}>
       {isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>
@@ -56,17 +78,16 @@ function CitiesCard({ offer, cardType }: CardProps): JSX.Element {
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          {isFavorite && (
-            <button
-              className="place-card__bookmark-button place-card__bookmark-button--active button"
-              type="button"
-            >
-              <svg className="place-card__bookmark-icon" width="18" height="19">
-                <use xlinkHref="#icon-bookmark"></use>
-              </svg>
-              <span className="visually-hidden">In bookmarks</span>
-            </button>
-          )}
+          <button
+            onClick={handleButtonClick}
+            className={cn('place-card__bookmark-button button', isFavorite && 'place-card__bookmark-button--active')}
+            type="button"
+          >
+            <svg className="place-card__bookmark-icon" width="18" height="19">
+              <use xlinkHref="#icon-bookmark"></use>
+            </svg>
+            <span className="visually-hidden">In bookmarks</span>
+          </button>
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">

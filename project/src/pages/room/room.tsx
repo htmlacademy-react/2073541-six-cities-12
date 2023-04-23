@@ -1,4 +1,5 @@
-import { useParams } from 'react-router-dom';
+import cn from 'classnames';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { calculateRatingPercent, capitalize } from '../../utils/utils';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -6,6 +7,9 @@ import { getNearOffers, getOffer, getOfferStatus } from '../../store/room-slice/
 import { fetchOfferAction, fetchNearOffersAction, fetchReviewsAction } from '../../store/api-actions';
 import { getReviews } from '../../store/reviews-slice/reviews-slice-selectors';
 import { sortReviews } from '../../utils/utils';
+import { addToFavoritesAction } from '../../store/api-actions';
+import { getIsAuthorized } from '../../store/user-slice/user-slice-selectors';
+import { AppRoute } from '../../const';
 import Layout from '../../components/layout/layout';
 import Offers from '../../components/offers/offers';
 import Map from '../../components/map/map';
@@ -19,12 +23,14 @@ const MAX_REVIEWS_AMOUNT = 10;
 function RoomPage(): JSX.Element {
 
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const id = Number(useParams().id);
   const offer = useAppSelector(getOffer);
   const offerStatus = useAppSelector(getOfferStatus);
   const nearOffers = useAppSelector(getNearOffers);
   const reviews = useAppSelector(getReviews);
+  const isAuth = useAppSelector(getIsAuthorized);
 
   useEffect(() => {
     dispatch(fetchOfferAction(id));
@@ -37,9 +43,22 @@ function RoomPage(): JSX.Element {
     return <LoadingScreen />;
   }
 
-  const { images, rating, title, type, bedrooms, maxAdults, price, goods, description } = offer;
+  const { images, rating, title, type, bedrooms, maxAdults, price, goods, description, isFavorite } = offer;
   const { avatarUrl, isPro, name } = offer.host;
   const sortedReviews = sortReviews(reviews).slice(0, MAX_REVIEWS_AMOUNT);
+
+  const handleButtonClick = () => {
+    if (!isAuth) {
+      navigate(AppRoute.Login);
+
+      return;
+    }
+    dispatch(addToFavoritesAction({
+      id: id,
+      status: Number(!isFavorite)
+    }));
+  };
+
 
   return (
     <Layout className="page" pageTitle='6 cities: property'>
@@ -63,7 +82,11 @@ function RoomPage(): JSX.Element {
                 <h1 className="property__name">
                   {title}
                 </h1>
-                <button className="property__bookmark-button button" type="button">
+                <button
+                  className={cn('property__bookmark-button button', isFavorite && 'property__bookmark-button--active')}
+                  type="button"
+                  onClick={handleButtonClick}
+                >
                   <svg className="property__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
@@ -136,7 +159,7 @@ function RoomPage(): JSX.Element {
           </section>
         </div>
       </main>
-    </Layout>
+    </Layout >
   );
 }
 export default RoomPage;
