@@ -15,6 +15,7 @@ import Offers from '../../components/offers/offers';
 import Map from '../../components/map/map';
 import Reviews from '../../components/reviews/reviews';
 import LoadingScreen from '../loading-screen/loading-screen';
+import Error from '../../components/error/error';
 
 
 const MAX_PHOTOS_AMOUNT = 6;
@@ -39,8 +40,12 @@ function RoomPage(): JSX.Element {
   }, [id, dispatch]);
 
 
-  if (!offer || offerStatus.isLoading) {
+  if (offerStatus.isLoading) {
     return <LoadingScreen />;
+  }
+
+  if (!offer || offerStatus.isError) {
+    return <Error />;
   }
 
   const { images, rating, title, type, bedrooms, maxAdults, price, goods, description, isFavorite } = offer;
